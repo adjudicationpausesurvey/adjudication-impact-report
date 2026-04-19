@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Hidden Cost of Immigration Delays: USCIS Adjudication Pause Impact Report 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --deep-red:#1A3A5C;--warm-red:#1B4F8A;--burnt-orange:#2E6B9E;
+  --amber:#D4A017;--gold:#F0C040;
+  --deep-navy:#1A3A5C;--ocean-blue:#1B4F8A;--steel-blue:#2E6B9E;
+  --warm-teal:#2E6B6E;--charcoal:#2D2D2D;--warm-gray:#7D7D7D;
+  --pale-blue:#C2D9EC;
+  --wine:#0F2844;--pale-warm:#E8F0F8;--warm-surface:#F0F5FA;
+  --bg:#F7FAFD;--white:#FFFFFF;--surface:#EEF3F8;
+  --muted:#4A5568;--border:rgba(26,58,92,0.10);
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Inter','Helvetica Neue',Arial,sans-serif;
+}
+
+/* ─── COMING SOON MODAL ─── */
+.coming-soon-overlay{display:none;position:fixed;inset:0;background:rgba(107,26,42,.45);z-index:9500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.coming-soon-overlay.open{display:flex}
+.coming-soon-box{background:var(--white);border-radius:10px;padding:2.5rem 2rem;width:90%;max-width:420px;text-align:center;box-shadow:0 20px 60px rgba(139,0,0,.18);position:relative;overflow:hidden}
+.coming-soon-box::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--deep-red),var(--warm-red),var(--burnt-orange),var(--amber),var(--gold))}
+.coming-soon-icon{width:56px;height:56px;border-radius:50%;background:var(--pale-warm);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+.coming-soon-box h3{font-family:var(--serif);font-size:1.4rem;color:var(--deep-red);margin-bottom:.6rem;font-weight:400}
+.coming-soon-box p{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:1.5rem}
+.coming-soon-close{background:var(--deep-red);color:#fff;border:none;border-radius:5px;padding:9px 28px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:background .15s}
+.coming-soon-close:hover{background:var(--wine)}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--charcoal);line-height:1.7;overflow-x:hidden;font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* ─── ELEMENT STYLE POPUP ─── */
+#style-popup{
+  display:none;position:fixed;z-index:9998;
+  background:var(--white);border:1px solid var(--border);border-radius:8px;
+  padding:12px 14px;width:300px;box-shadow:0 8px 32px rgba(139,0,0,.18);font-family:var(--sans);
+}
+#style-popup.open{display:block}
+#style-popup h4{font-size:11px;font-weight:700;color:var(--deep-red);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.sp-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.sp-label{font-size:10.5px;color:var(--muted);font-weight:600;min-width:44px}
+.sp-select,.sp-input{padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-size:11.5px;font-family:var(--sans);color:var(--charcoal);outline:none;flex:1;background:var(--white)}
+.sp-select:focus,.sp-input:focus{border-color:var(--warm-red)}
+.sp-color{width:26px;height:26px;border:2px solid var(--border);border-radius:4px;cursor:pointer;padding:0;background:none;flex-shrink:0}
+.sp-color::-webkit-color-swatch-wrapper{padding:0}
+.sp-color::-webkit-color-swatch{border:none;border-radius:2px}
+.sp-actions{display:flex;gap:6px;margin-top:8px}
+.sp-btn{padding:5px 12px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);border:none;transition:all .12s}
+.sp-apply{background:var(--deep-red);color:#fff}
+.sp-apply:hover{background:var(--wine)}
+.sp-close{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
+.sp-close:hover{background:var(--border)}
+.sp-divider{height:1px;background:var(--border);margin:8px 0}
+/* highlight currently selected element */
+body.edit-mode .style-selected{outline:2.5px solid var(--burnt-orange)!important;outline-offset:2px}
+#edit-toolbar{
+  position:fixed;bottom:24px;right:24px;z-index:9999;
+  background:var(--deep-navy);color:#fff;border-radius:8px;
+  padding:10px 16px;display:flex;align-items:center;gap:10px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.25);font-family:var(--sans);font-size:13px;
+}
+#edit-toggle{
+  background:var(--burnt-orange);color:#fff;border:none;border-radius:5px;
+  padding:7px 16px;font-size:12.5px;font-weight:600;cursor:pointer;
+  font-family:var(--sans);letter-spacing:.02em;transition:background .15s;
+}
+#edit-toggle:hover{background:var(--warm-red)}
+#edit-toggle.active{background:var(--gold);color:var(--deep-navy)}
+.edit-hint{font-size:11.5px;color:rgba(255,255,255,.5)}
+
+/* ─── EDITABLE ELEMENTS ─── */
+body.edit-mode [contenteditable]{
+  outline:1.5px dashed rgba(192,57,43,.45);border-radius:3px;cursor:text;
+  background:rgba(192,57,43,.04);min-width:20px;min-height:1em;display:inline-block;
+}
+body.edit-mode [contenteditable]:focus{outline:2px solid var(--warm-red);background:rgba(192,57,43,.06)}
+body.edit-mode [contenteditable]:empty::before{content:attr(data-placeholder);color:var(--warm-gray);font-style:italic;pointer-events:none}
+
+/* ─── BLOCK CONTROLS ─── */
+body.edit-mode .block-wrap{position:relative}
+body.edit-mode .block-wrap:hover>.block-controls{display:flex}
+.block-controls{display:none;position:absolute;top:8px;right:8px;z-index:100;gap:4px;background:var(--white);border:1px solid var(--border);border-radius:5px;padding:4px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.bc-btn{width:28px;height:28px;border:none;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;transition:background .1s}
+.bc-btn:hover{background:var(--surface)}
+.bc-btn svg{width:14px;height:14px}
+.bc-up,.bc-down{color:var(--ocean-blue)}
+.bc-del{color:var(--warm-red)}
+
+/* ─── EMBED EDITOR ─── */
+body.edit-mode .embed-slot{cursor:pointer;position:relative}
+body.edit-mode .embed-slot:hover::after{content:'Click to edit embed';position:absolute;inset:0;background:rgba(139,0,0,.78);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--sans);border-radius:3px}
+body.edit-mode .embed-slot:hover{outline:2px dashed var(--warm-red)}
+
+/* ─── LINK EDITOR ─── */
+.btn-editable{position:relative}
+body.edit-mode .btn-editable{cursor:pointer}
+body.edit-mode .btn-editable:hover::after{content:'Click to set link';position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:var(--deep-navy);color:#fff;font-size:11px;padding:3px 8px;border-radius:4px;white-space:nowrap;pointer-events:none;font-family:var(--sans)}
+
+/* ─── NAV EDIT ─── */
+body.edit-mode .nav-link-item{position:relative;cursor:pointer}
+body.edit-mode .nav-link-item:hover{outline:1px dashed var(--warm-red);border-radius:3px}
+body.edit-mode #add-nav-btn{display:flex!important}
+#add-nav-btn{display:none;align-items:center;gap:4px;font-size:12px;color:var(--burnt-orange);font-weight:600;cursor:pointer;padding:0 10px;height:56px;border:none;background:none;font-family:var(--sans)}
+#add-nav-btn:hover{text-decoration:underline}
+
+/* ─── STRIPE ─── */
+.stripe{height:5px;background:linear-gradient(90deg,var(--deep-navy),var(--ocean-blue),var(--steel-blue),var(--warm-teal),var(--gold),var(--amber),var(--warm-teal),var(--steel-blue),var(--deep-navy))}
+
+/* ─── NAV ─── */
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px);background:rgba(255,255,255,.92)}
+.nav-logo{font-family:var(--serif);font-size:14px;color:var(--deep-navy);letter-spacing:.01em}
+.nav-logo span{color:var(--warm-red);font-style:italic}
+.nav-links{display:flex;gap:0;align-items:center}
+.nav-link-item a{font-size:12.5px;color:var(--muted);text-decoration:none;padding:0 13px;height:56px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:all .15s;font-weight:500;letter-spacing:.01em;white-space:nowrap}
+.nav-link-item a:hover{color:var(--deep-red);border-bottom-color:var(--warm-red)}
+
+/* ─── HERO ─── */
+.hero{background:var(--white);border-bottom:1px solid var(--border);padding:4.5rem 2rem 3.5rem}
+.hero-inner{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 330px;gap:3.5rem;align-items:start}
+.hero-kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-red);margin-bottom:.85rem}
+.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,3.6vw,2.85rem);font-weight:400;line-height:1.18;color:var(--deep-red);margin-bottom:1.1rem}
+.hero h1 em{font-style:italic;color:var(--burnt-orange)}
+.hero-desc{font-size:18px;color:var(--muted);line-height:1.8;font-weight:400;margin-bottom:1.75rem;max-width:580px}
+.hero-meta{font-size:12px;color:var(--warm-gray);margin-bottom:1.75rem;display:flex;gap:1.5rem;flex-wrap:wrap}
+.hero-meta span{display:flex;align-items:center;gap:5px}
+.hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:2rem}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:4px;font-size:13px;font-weight:600;font-family:var(--sans);cursor:pointer;border:none;text-decoration:none;transition:all .15s;letter-spacing:.01em;white-space:nowrap}
+.btn-primary{background:var(--deep-red);color:#fff}
+.btn-primary:hover{background:var(--wine)}
+.btn-teal{background:var(--burnt-orange);color:#fff}
+.btn-teal:hover{background:var(--warm-red)}
+.btn-outline{background:transparent;color:var(--deep-red);border:1.5px solid var(--deep-red)}
+.btn-outline:hover{background:var(--pale-warm)}
+.btn-gold{background:var(--gold);color:var(--deep-navy)}
+.btn-gold:hover{background:var(--amber)}
+.btn-white-outline{background:transparent;color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.3)}
+.btn-white-outline:hover{background:rgba(255,255,255,.08);color:#fff}
+.btn-red{background:var(--deep-red);color:#fff}
+.btn-red:hover{background:#6A0000}
+
+/* share row */
+.share-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.share-label{font-size:11px;color:var(--warm-gray);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.share-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);background:var(--white);cursor:pointer;transition:all .15s;text-decoration:none;flex-shrink:0}
+.share-btn:hover{border-color:var(--warm-red);background:var(--pale-warm)}
+.share-btn svg{width:15px;height:15px;flex-shrink:0}
+
+/* hero sidebar */
+.report-card{background:var(--deep-red);border-radius:6px;padding:1.75rem;color:#fff;margin-bottom:1rem}
+.report-card-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.65rem;font-weight:600}
+.report-card h3{font-family:var(--serif);font-size:1.1rem;font-weight:400;margin-bottom:.65rem;line-height:1.4;color:#fff}
+.report-card p{font-size:13px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:1.1rem;font-weight:300}
+.stat-pills{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:.8rem 1rem}
+.stat-pill-num{font-family:var(--serif);font-size:1.6rem;color:var(--deep-red);line-height:1;margin-bottom:3px}
+.stat-pill-num span{color:var(--warm-red)}
+.stat-pill-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+
+/* ─── SECTION NAV ─── */
+.section-nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;overflow-x:auto;white-space:nowrap}
+.section-nav-inner{max-width:1060px;margin:0 auto;display:flex;align-items:center}
+.snav-item{display:inline-flex;align-items:center;gap:7px;padding:.9rem 1.25rem;font-size:12.5px;font-weight:600;color:var(--muted);border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;transition:all .15s;text-decoration:none;letter-spacing:.01em}
+.snav-item:hover{color:var(--deep-red);border-bottom-color:var(--warm-red)}
+.snav-item.active{color:var(--deep-red);border-bottom-color:var(--deep-red)}
+.snav-dot{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;flex-shrink:0}
+
+/* ─── SECTION COMMON ─── */
+section{padding:3.5rem 2rem}
+.section-inner{max-width:1060px;margin:0 auto}
+.sec-label{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-red);margin-bottom:.5rem}
+.sec-title{font-family:var(--serif);font-size:clamp(1.45rem,2.8vw,1.95rem);font-weight:400;line-height:1.28;color:var(--deep-red);margin-bottom:.8rem}
+.sec-body{font-size:17px;color:var(--muted);line-height:1.82;max-width:700px;margin-bottom:2rem;font-weight:400}
+.divider{height:1px;background:var(--border);max-width:1060px;margin:0 auto}
+
+/* ─── AT A GLANCE ─── */
+.glance-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:2.5rem}
+.glance-cell{background:var(--white);padding:1.5rem;text-align:center}
+.glance-num{font-family:var(--serif);font-size:2.2rem;line-height:1;margin-bottom:.35rem;font-weight:400}
+.glance-label{font-size:13.5px;color:var(--muted);font-weight:500;line-height:1.5}
+
+/* ─── FINDINGS ─── */
+.findings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:2rem}
+.finding-cell{background:var(--white);padding:1.6rem;position:relative}
+.finding-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.fc-t::before{background:var(--warm-teal)}.fc-r::before{background:var(--warm-red)}.fc-a::before{background:var(--amber)}.fc-n::before{background:var(--ocean-blue)}.fc-g::before{background:var(--gold)}.fc-o::before{background:var(--burnt-orange)}.fc-d::before{background:var(--deep-red)}.fc-s::before{background:var(--steel-blue)}.fc-dr::before{background:var(--deep-navy)}
+.finding-pct{font-family:var(--serif);font-size:2.5rem;line-height:1;margin-bottom:.4rem;font-weight:400}
+.fc-t .finding-pct{color:var(--warm-teal)}.fc-r .finding-pct{color:var(--warm-red)}.fc-a .finding-pct{color:var(--amber)}.fc-n .finding-pct{color:var(--ocean-blue)}.fc-g .finding-pct{color:var(--gold)}.fc-o .finding-pct{color:var(--burnt-orange)}.fc-d .finding-pct{color:var(--deep-red)}.fc-s .finding-pct{color:var(--steel-blue)}.fc-dr .finding-pct{color:var(--deep-navy)}
+.finding-title{font-size:15px;font-weight:600;color:var(--charcoal);margin-bottom:6px;line-height:1.45}
+.finding-desc{font-size:14px;color:var(--muted);line-height:1.7;font-weight:400}
+.finding-tag{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-top:9px}
+
+/* ─── IMPACT CARDS ─── */
+.impact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:11px;margin-top:1.5rem}
+.impact-card{background:var(--white);border:1px solid var(--border);border-radius:5px;padding:1.2rem;border-top:3px solid}
+.impact-card h4{font-size:14.5px;font-weight:700;color:var(--deep-red);margin-bottom:6px}
+.impact-card p{font-size:14px;color:var(--muted);line-height:1.65;font-weight:400}
+
+/* ─── INLINE VIZ ─── */
+.viz-section{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:2rem;margin-top:2rem}
+.viz-title{font-family:var(--serif);font-size:1.15rem;color:var(--deep-navy);margin-bottom:.5rem}
+.viz-subtitle{font-size:13px;color:var(--muted);margin-bottom:1.5rem}
+.viz-bar-group{margin-bottom:12px}
+.viz-bar-label{font-size:12px;color:var(--charcoal);font-weight:500;margin-bottom:4px;display:flex;justify-content:space-between}
+.viz-bar-track{height:24px;background:var(--surface);border-radius:3px;overflow:hidden}
+.viz-bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff;min-width:30px;transition:width .6s ease}
+.viz-note{font-size:11px;color:var(--warm-gray);margin-top:1rem;font-style:italic}
+
+/* ─── INFOGRAPHICS ─── */
+.infographic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:2rem}
+.infographic-card{background:var(--white);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.infographic-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,58,92,.08)}
+.infographic-card.featured{grid-column:span 2}
+.infographic-card.chart-card{grid-column:1 / -1}
+.infographic-thumb{min-height:190px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.infographic-card.featured .infographic-thumb{min-height:250px}
+/* Embedded chart: white bg, centered, natural size */
+.infographic-thumb.has-chart{height:auto;min-height:0;background:#fff!important;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+.infographic-thumb.has-chart .embed-slot{max-width:680px;width:100%;margin:0 auto}
+.infographic-thumb.has-chart iframe{width:100%;border:none;display:block}
+/* Move badge below chart for embedded cards */
+.chart-card .infographic-thumb-badge{position:static;display:inline-block;margin-bottom:0.75rem}
+.infographic-thumb-badge{position:absolute;top:10px;left:10px;background:var(--deep-red);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:3px;z-index:2}
+.infographic-body{padding:1rem 1.1rem}
+.infographic-category{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--warm-red);margin-bottom:4px}
+.infographic-title{font-size:15px;font-weight:600;color:var(--deep-red);margin-bottom:6px;line-height:1.45}
+.infographic-desc{font-size:14px;color:var(--muted);line-height:1.65;font-weight:400}
+.infographic-meta{display:flex;align-items:center;justify-content:space-between;margin-top:9px;padding-top:9px;border-top:1px solid var(--border)}
+.infographic-meta span{font-size:11px;color:var(--warm-gray)}
+.infographic-dl{font-size:11px;color:var(--warm-red);font-weight:600;cursor:pointer}
+
+/* embed slot */
+.embed-slot{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:default;transition:all .15s}
+.embed-slot iframe{width:100%;height:100%;border:none;display:block}
+.embed-slot-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;width:100%;height:100%;padding:1rem}
+.embed-slot-placeholder .ep-icon{width:36px;height:36px;border-radius:4px;background:rgba(139,0,0,.08);display:flex;align-items:center;justify-content:center}
+.embed-slot-placeholder strong{font-size:13px;color:var(--deep-red);font-weight:600}
+.embed-slot-placeholder span{font-size:11px;color:var(--warm-gray);text-align:center}
+
+/* ─── REPORT CHAPTERS ─── */
+.report-toc{display:grid;grid-template-columns:220px 1fr;gap:2.5rem;margin-top:2rem}
+.toc-nav{position:sticky;top:68px;align-self:start}
+.toc-item{display:flex;gap:9px;align-items:flex-start;padding:8px 12px;font-size:13px;color:var(--muted);cursor:pointer;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4;border-radius:0 4px 4px 0}
+.toc-item:hover,.toc-item.active{color:var(--deep-red);background:var(--pale-warm);border-left-color:var(--warm-red)}
+.toc-num{font-size:10px;font-weight:700;color:var(--warm-gray);min-width:18px;margin-top:2px;letter-spacing:.04em}
+.report-chapters{display:flex;flex-direction:column;gap:10px}
+.chapter-card{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1.4rem;transition:all .15s;cursor:pointer}
+.chapter-card:hover{border-color:var(--warm-red);background:var(--white)}
+.chapter-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--warm-red);margin-bottom:4px}
+.chapter-title{font-family:var(--serif);font-size:1.05rem;font-weight:400;color:var(--deep-navy);margin-bottom:.45rem}
+.chapter-desc{font-size:15px;color:var(--muted);line-height:1.72;font-weight:400}
+.chapter-arrow{display:flex;justify-content:flex-end;margin-top:.65rem}
+.chapter-arrow span{font-size:12px;color:var(--warm-red);font-weight:600}
+
+/* ─── ARTICLES ─── */
+.articles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:14px;margin-top:2rem}
+.article-card{background:var(--white);border:1px solid var(--border);border-radius:5px;padding:1.4rem;transition:all .15s;cursor:pointer}
+.article-card:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(26,58,92,.07)}
+.article-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem;display:inline-block;padding:2px 8px;border-radius:3px}
+.article-title{font-family:var(--serif);font-size:1rem;font-weight:400;color:var(--deep-navy);margin-bottom:.45rem;line-height:1.4}
+.article-excerpt{font-size:14.5px;color:var(--muted);line-height:1.72;font-weight:400;margin-bottom:.75rem}
+.article-meta{font-size:11px;color:var(--warm-gray);font-weight:500}
+
+/* ─── POLICY RECS ─── */
+.rec-item{background:var(--white);border:1px solid var(--border);border-left:4px solid;border-radius:4px;padding:1.4rem;display:flex;gap:1.1rem}
+.rec-num{width:30px;height:30px;border-radius:50%;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rec-title{font-size:15.5px;font-weight:700;color:var(--deep-navy);margin-bottom:5px}
+.rec-body{font-size:15px;color:var(--muted);line-height:1.78;font-weight:400}
+
+/* ─── DATA BREAKDOWN ─── */
+.data-breakdown{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:2rem;margin-top:1.5rem}
+.data-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:1rem}
+.data-table th{text-align:left;font-weight:700;color:var(--deep-navy);padding:8px 12px;border-bottom:2px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.data-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--charcoal);font-size:14px;line-height:1.6}
+.data-table tr:hover{background:rgba(46,107,110,.03)}
+.data-table .highlight{font-weight:700;color:var(--deep-navy)}
+
+/* ─── CTA ─── */
+.cta-section{background:var(--deep-red);padding:4rem 2rem;text-align:center}
+.cta-inner{max-width:600px;margin:0 auto}
+.cta-title{font-family:var(--serif);font-size:clamp(1.7rem,3.8vw,2.4rem);color:#fff;margin-bottom:.9rem;font-weight:400}
+.cta-title em{color:var(--gold);font-style:italic}
+.cta-body{font-size:17px;color:rgba(255,255,255,.65);line-height:1.82;margin-bottom:2.25rem;font-weight:300}
+.cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* ─── FOOTER ─── */
+footer{background:var(--charcoal);color:rgba(255,255,255,.4);padding:1.75rem 2rem;text-align:center;font-size:12.5px}
+footer a{color:rgba(255,255,255,.55);text-decoration:none}footer a:hover{color:var(--gold)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr}.hero-sidebar{display:none}
+  .findings-grid{grid-template-columns:1fr 1fr}
+  .infographic-grid{grid-template-columns:1fr 1fr}
+  .infographic-card.featured{grid-column:span 1}
+  .report-toc{grid-template-columns:1fr}.toc-nav{position:static}
+  .glance-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .findings-grid{grid-template-columns:1fr}
+  .infographic-grid{grid-template-columns:1fr}
+  .stat-pills{grid-template-columns:1fr 1fr}
+  .glance-grid{grid-template-columns:1fr 1fr}
+}
+
+/* ─── MODAL ─── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--white);border-radius:8px;padding:1.75rem;width:90%;max-width:520px;font-family:var(--sans)}
+.modal-box h3{font-size:15px;font-weight:700;color:var(--deep-navy);margin-bottom:1rem}
+.modal-box label{font-size:12.5px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px;margin-top:.75rem}
+.modal-box input,.modal-box textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:4px;font-size:13px;font-family:var(--sans);color:var(--charcoal);outline:none;transition:border-color .15s}
+.modal-box input:focus,.modal-box textarea:focus{border-color:var(--warm-teal)}
+.modal-box textarea{min-height:90px;resize:vertical}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
+.modal-btn{padding:7px 16px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);border:none;transition:all .15s}
+.modal-save{background:var(--warm-teal);color:#fff}.modal-save:hover{background:#245857}
+.modal-cancel{background:var(--surface);color:var(--muted);border:1px solid var(--border)}.modal-cancel:hover{background:var(--border)}
+
+/* ─── METHODOLOGY NOTE ─── */
+.methodology-banner{background:var(--pale-warm);border:1px solid rgba(192,57,43,.12);border-radius:6px;padding:1.2rem 1.5rem;display:flex;align-items:flex-start;gap:12px;margin-top:2rem}
+.methodology-banner svg{flex-shrink:0;margin-top:2px}
+.methodology-banner p{font-size:14.5px;color:var(--charcoal);line-height:1.7}
+.methodology-banner strong{font-weight:700}
+
+/* ─── HUMAN STORIES CAROUSEL ─── */
+.stories-carousel-wrap{position:relative;display:flex;align-items:center;margin-top:2.5rem}
+.share-drop-item{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:5px;text-decoration:none;color:var(--charcoal);font-size:13px;font-weight:500;transition:background .1s}
+.share-drop-item:hover{background:var(--surface)}
+.stories-outer{overflow:hidden;width:100%}
+.stories-track{display:flex;gap:22px;transition:transform .52s cubic-bezier(.25,.46,.45,.94);will-change:transform;align-items:stretch}
+/* Wide card: horizontal row — colour bar on left, content on right */
+.story-card{display:flex;flex-direction:row;background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 3px 18px rgba(26,58,92,.07);transition:box-shadow .22s,transform .18s;cursor:default}
+.story-card:hover{box-shadow:0 10px 36px rgba(26,58,92,.13);transform:translateY(-3px)}
+.story-card-bar{width:8px;flex-shrink:0}
+.story-card-body{padding:1.6rem 1.75rem;display:flex;flex-direction:column;gap:.6rem;flex:1;position:relative;overflow:hidden;min-width:0}
+.story-bg-qmark{position:absolute;top:-.5rem;right:1rem;font-family:Georgia,serif;font-size:9rem;line-height:1;font-weight:700;opacity:.04;user-select:none;pointer-events:none;color:var(--charcoal)}
+.story-cat{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:3px;display:inline-block;align-self:flex-start}
+.story-text{font-size:15px;color:#374151;line-height:1.82;font-weight:400;font-style:italic;flex:1}
+.story-attr{font-size:11.5px;font-weight:700;color:var(--deep-navy);letter-spacing:.02em;padding-top:.75rem;border-top:1px solid var(--border);margin-top:auto}
+/* Nav — light background */
+.s-nav{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s;box-shadow:0 2px 8px rgba(26,58,92,.07)}
+.s-nav:hover{background:var(--deep-navy);border-color:var(--deep-navy)}
+.s-nav:hover svg path{stroke:#fff!important}
+.s-nav:disabled{opacity:.25;cursor:default;pointer-events:none}
+.s-nav.s-prev{margin-right:16px}
+.s-nav.s-next{margin-left:16px}
+.s-dot{width:8px;height:8px;border-radius:50%;background:var(--border);border:none;padding:0;cursor:pointer;transition:all .22s;flex-shrink:0}
+.s-dot.active{background:var(--ocean-blue);width:26px;border-radius:4px}
+.s-footer{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:1.5rem}
+.s-counter{font-size:12.5px;color:var(--warm-gray);font-weight:500;min-width:60px;text-align:right}
+@media(max-width:700px){.story-card{flex:0 0 calc(90%)!important}.s-nav{width:38px;height:38px}}
+</style>
+</head>
+<body>
+
+<!-- EDIT TOOLBAR -->
+
+<!-- PER-ELEMENT STYLE POPUP -->
+<div id="style-popup">
+  <h4 id="sp-title">Edit Element</h4>
+  <div class="sp-row">
+    <span class="sp-label">Font</span>
+    <select class="sp-select" id="sp-font">
+      <option value="">— keep —</option>
+      <option value="'Plus Jakarta Sans',sans-serif">Plus Jakarta Sans</option>
+      <option value="'DM Serif Display',Georgia,serif">DM Serif Display</option>
+      <option value="Georgia,serif">Georgia</option>
+      <option value="'Helvetica Neue',Arial,sans-serif">Helvetica Neue</option>
+      <option value="'Palatino Linotype',serif">Palatino</option>
+      <option value="system-ui,sans-serif">System UI</option>
+    </select>
+  </div>
+  <div class="sp-row">
+    <span class="sp-label">Size</span>
+    <input type="text" class="sp-input" id="sp-size" placeholder="e.g. 16px, 1.2rem, 2em">
+  </div>
+  <div class="sp-row">
+    <span class="sp-label">Weight</span>
+    <select class="sp-select" id="sp-weight">
+      <option value="">— keep —</option>
+      <option value="300">Light (300)</option>
+      <option value="400">Regular (400)</option>
+      <option value="500">Medium (500)</option>
+      <option value="600">Semibold (600)</option>
+      <option value="700">Bold (700)</option>
+      <option value="800">Extra Bold (800)</option>
+    </select>
+  </div>
+  <div class="sp-row">
+    <span class="sp-label">Color</span>
+    <input type="color" class="sp-color" id="sp-color" value="#2D2D2D">
+    <input type="text" class="sp-input" id="sp-color-hex" placeholder="#2D2D2D" style="flex:1">
+  </div>
+  <div class="sp-divider"></div>
+  <div class="sp-row" id="sp-bg-row">
+    <span class="sp-label">BG</span>
+    <input type="color" class="sp-color" id="sp-bg" value="#8B0000">
+    <input type="text" class="sp-input" id="sp-bg-hex" placeholder="Button background">
+  </div>
+  <div class="sp-actions">
+    <button class="sp-btn sp-apply" onclick="applyStyle()">Apply</button>
+    <button class="sp-btn sp-close" onclick="closeStylePopup()">Close</button>
+  </div>
+</div>
+
+<!-- EMBED MODAL -->
+<div class="modal-overlay" id="embed-modal">
+  <div class="modal-box">
+    <h3>Edit Chart Embed</h3>
+    <label>Datawrapper iframe embed code</label>
+    <textarea id="embed-input" placeholder='Paste your Datawrapper <iframe ...> code here'></textarea>
+    <label>Chart title</label>
+    <input type="text" id="embed-title-input" placeholder="e.g. Financial Impact by Application Type">
+    <label>Category label</label>
+    <input type="text" id="embed-category-input" placeholder="e.g. Economic Impact">
+    <div class="modal-actions">
+      <button class="modal-btn modal-cancel" onclick="closeModal('embed-modal')">Cancel</button>
+      <button class="modal-btn modal-save" onclick="saveEmbed()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- LINK MODAL -->
+<div class="modal-overlay" id="link-modal">
+  <div class="modal-box">
+    <h3>Set Button Link</h3>
+    <label>URL (include https://)</label>
+    <input type="text" id="link-input" placeholder="https://...">
+    <label>Button label</label>
+    <input type="text" id="link-label-input" placeholder="Button text">
+    <div class="modal-actions">
+      <button class="modal-btn modal-cancel" onclick="closeModal('link-modal')">Cancel</button>
+      <button class="modal-btn modal-save" onclick="saveLink()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV MODAL -->
+<div class="modal-overlay" id="nav-modal">
+  <div class="modal-box">
+    <h3>Edit Nav Link</h3>
+    <label>Label</label>
+    <input type="text" id="nav-label-input" placeholder="Nav item label">
+    <label>Link (anchor or URL)</label>
+    <input type="text" id="nav-href-input" placeholder="#findings or https://...">
+    <div class="modal-actions">
+      <button class="modal-btn modal-cancel" onclick="closeModal('nav-modal')">Cancel</button>
+      <button class="modal-btn modal-save" onclick="saveNavItem()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMING SOON MODAL -->
+<div class="coming-soon-overlay" id="coming-soon-modal">
+  <div class="coming-soon-box">
+    <div class="coming-soon-icon">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="11" stroke="#8B0000" stroke-width="2"/><path d="M13 7v7l4 2" stroke="#C0392B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h3>Coming Soon</h3>
+    <p>The full report and chapter downloads are being finalized and will be available shortly. Check back soon or follow us for updates.</p>
+    <button class="coming-soon-close" onclick="closeModal('coming-soon-modal')">Got It</button>
+  </div>
+</div>
+
+<div class="stripe"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" contenteditable="false" data-placeholder="Site title">USCIS Adjudication Pause <span>Impact Report</span></div>
+  <div class="nav-links" id="nav-links">
+    <div class="nav-link-item"><a href="#findings">Key Findings</a></div>
+    <div class="nav-link-item"><a href="#infographics">Infographics</a></div>
+    <div class="nav-link-item"><a href="#report">Full Report</a></div>
+    <div class="nav-link-item"><a href="#articles">Articles</a></div>
+    <div class="nav-link-item"><a href="#stories">Stories</a></div>
+    <div class="nav-link-item"><a href="#policy">Policy</a></div>
+    <div class="nav-link-item"><a href="#cta">Take Action</a></div>
+    <button id="add-nav-btn" onclick="addNavItem()">+ Add link</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero block-wrap" id="block-hero">
+  <div class="block-controls">
+    <button class="bc-btn bc-del" title="Hide section" onclick="toggleBlock('block-hero')"><svg viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-kicker" contenteditable="false" data-placeholder="Kicker label">Independent Policy Research · 2026</div>
+      <h1 contenteditable="false" data-placeholder="Main headline">The Hidden Cost of Immigration Delays:<br><em>Economic &amp; Human Impact of the USCIS Adjudication Pause</em></h1>
+      <p class="hero-desc" contenteditable="false" data-placeholder="Description">Evidence from 189 affected individuals across 31 U.S. states and 23+ nationalities documenting the economic disruption, financial impact, and brain drain risk caused by the federal pause on immigration benefit processing.</p>
+      <div class="hero-meta">
+        <span contenteditable="false">Published April 2026</span>
+        <span contenteditable="false">189 Survey Respondents</span>
+        <span contenteditable="false">31 States · 23+ Nationalities</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary btn-editable" id="btn-download-report" onclick="handleBtnClick(event,'btn-download-report')">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2v6.5M4 6L6.5 8.5 9 6M2 11h9" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="btn-label">Download Full Report</span>
+        </a>
+        <a href="#findings" class="btn btn-teal" id="btn-findings"><span class="btn-label">View Key Findings</span></a>
+        <a href="#infographics" class="btn btn-outline" id="btn-infographics"><span class="btn-label">Browse Infographics</span></a>
+      </div>
+      <div class="share-row">
+        <span class="share-label">Share:</span>
+        <a class="share-btn" id="share-twitter" href="#" title="Share on X / Twitter" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" style="color:#5A6170"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.736-8.859L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a class="share-btn" id="share-linkedin" href="#" title="Share on LinkedIn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" style="color:#5A6170"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+        <a class="share-btn" id="share-facebook" href="#" title="Share on Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" style="color:#5A6170"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        <a class="share-btn" id="share-email" href="#" title="Share via Email"><svg viewBox="0 0 24 24" fill="none" stroke="#5A6170" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round"/></svg></a>
+        <a class="share-btn" id="share-copy" href="#" title="Copy link" onclick="copyPageLink(event)"><svg viewBox="0 0 24 24" fill="none" stroke="#5A6170" stroke-width="1.8"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-linecap="round"/></svg></a>
+      </div>
+    </div>
+    <div class="hero-sidebar">
+      <div class="report-card">
+        <div class="report-card-label">Report at a glance</div>
+        <h3 contenteditable="false">10 Chapters · 7 Impact Domains </h3>
+        <p contenteditable="false">Covering employment, financial, education, housing, family, legal, and health impacts among highly skilled immigrants.</p>
+        <a href="#" class="btn btn-gold btn-editable" id="btn-pdf" onclick="handleBtnClick(event,'btn-pdf')" style="width:100%;justify-content:center">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2v6.5M4 6L6.5 8.5 9 6M2 11h9" stroke="#8B0000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="btn-label">Download PDF</span>
+        </a>
+      </div>
+      <div class="stat-pills">
+        <div class="stat-pill"><div class="stat-pill-num" contenteditable="false">189</div><div class="stat-pill-label" contenteditable="false">Respondents</div></div>
+        <div class="stat-pill"><div class="stat-pill-num" contenteditable="false">83<span>%</span></div><div class="stat-pill-label" contenteditable="false">Hold Bachelor's+</div></div>
+        <div class="stat-pill"><div class="stat-pill-num" contenteditable="false">61<span>%</span></div><div class="stat-pill-label" contenteditable="false">Considering departing</div></div>
+        <div class="stat-pill"><div class="stat-pill-num" contenteditable="false">96<span>%</span></div><div class="stat-pill-label" contenteditable="false">Health impacted</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION NAV TABS -->
+<div class="section-nav">
+  <div class="section-nav-inner">
+    <a href="#findings" class="snav-item active"><div class="snav-dot" style="background:var(--deep-red)">K</div>Key Findings</a>
+    <a href="#infographics" class="snav-item"><div class="snav-dot" style="background:var(--warm-red)">I</div>Infographics</a>
+    <a href="#report" class="snav-item"><div class="snav-dot" style="background:var(--burnt-orange)">R</div>Full Report</a>
+    <a href="#articles" class="snav-item"><div class="snav-dot" style="background:var(--amber)">A</div>Articles</a>
+    <a href="#stories" class="snav-item"><div class="snav-dot" style="background:var(--warm-teal)">S</div>Stories</a>
+    <a href="#policy" class="snav-item"><div class="snav-dot" style="background:var(--gold)">P</div>Policy</a>
+  </div>
+</div>
+
+<!-- AT A GLANCE -->
+<section style="background:var(--white)" id="glance" class="block-wrap">
+  <div class="block-controls">
+    <button class="bc-btn bc-up" title="Move up" onclick="moveBlock(this,'up')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 11V3M3.5 6.5L7 3l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-down" title="Move down" onclick="moveBlock(this,'down')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3.5 7.5L7 11l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-del" title="Hide block" onclick="toggleBlock(this.closest('.block-wrap'))"><svg viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="section-inner">
+    <div class="sec-label" contenteditable="false">The Crisis at a Glance</div>
+    <h2 class="sec-title" contenteditable="false">A highly skilled population sidelined by policy</h2>
+    <p class="sec-body" contenteditable="false">The USCIS adjudication pause affects nationals from 39 countries and has frozen processing for asylum, adjustment of status, naturalization, EADs, and more since late 2025.</p>
+    <div class="glance-grid">
+      <div class="glance-cell"><div class="glance-num" style="color:var(--deep-red)" contenteditable="false">39</div><div class="glance-label" contenteditable="false">Countries affected by the adjudication hold</div></div>
+      <div class="glance-cell"><div class="glance-num" style="color:var(--warm-red)" contenteditable="false">27.5%</div><div class="glance-label" contenteditable="false">Unemployed due to lack of work authorization</div></div>
+      <div class="glance-cell"><div class="glance-num" style="color:var(--warm-teal)" contenteditable="false">47.4%</div><div class="glance-label" contenteditable="false">in debt due to USCIS adjudication pause</div></div>
+      <div class="glance-cell"><div class="glance-num" style="color:var(--burnt-orange)" contenteditable="false">8.95</div><div class="glance-label" contenteditable="false">Mean stress level out of 10 (Median: 10)</div></div>
+    </div>
+
+    <div class="methodology-banner">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#C0392B" stroke-width="1.5"/><path d="M9 5v4M9 12h.01" stroke="#C0392B" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <p><strong>Methodology:</strong> Data collected via structured online survey distributed through immigration networks on social media. 189 respondents completed the survey between February–March 2026. All responses anonymized. Survey covers 10 sections across demographics, education, employment, immigration status, and 7 life domains. Questions include multiple-choice, multi-select, Likert scale, and open-ended formats.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- KEY FINDINGS -->
+<section style="background:var(--surface)" id="findings" class="block-wrap">
+  <div class="block-controls">
+    <button class="bc-btn bc-up" onclick="moveBlock(this,'up')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 11V3M3.5 6.5L7 3l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-down" onclick="moveBlock(this,'down')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3.5 7.5L7 11l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-del" onclick="toggleBlock(this.closest('.block-wrap'))"><svg viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="section-inner">
+    <div class="sec-label" contenteditable="false">Key Findings</div>
+    <h2 class="sec-title" contenteditable="false">What the data reveals</h2>
+    <p class="sec-body" contenteditable="false">Survey responses from 189 individuals across 23+ states document wide-ranging, compounding consequences of the USCIS adjudication pause on employment, finances, health, housing, family, and legal status.</p>
+    <div class="findings-grid">
+      <div class="finding-cell fc-t">
+        <div class="finding-pct" contenteditable="false">75.2%</div>
+        <div class="finding-title" contenteditable="false">Report at least one direct financial impact</div>
+        <div class="finding-desc" contenteditable="false">94 of 125 respondents experienced housing instability, depleted savings, healthcare unaffordability, or inability to afford food. Average 3.47 simultaneous financial challenges.</div>
+        <span class="finding-tag" style="background:#E8F0F8;color:#1A3A5C" contenteditable="false">Financial</span>
+      </div>
+      <div class="finding-cell fc-r">
+        <div class="finding-pct" contenteditable="false">96.2%</div>
+        <div class="finding-title" contenteditable="false">Report at least one adverse health outcome</div>
+        <div class="finding-desc" contenteditable="false">125 of 130 respondents experienced anxiety/depression, sleep disruption, or physical health decline. Mean stress score: 8.95/10 with median at maximum (10).</div>
+        <span class="finding-tag" style="background:#DCEAF7;color:#1B4F8A" contenteditable="false">Health Crisis</span>
+      </div>
+      <div class="finding-cell fc-a">
+        <div class="finding-pct" contenteditable="false">60.9%</div>
+        <div class="finding-title" contenteditable="false">Considering leaving the United States</div>
+        <div class="finding-desc" contenteditable="false">Only 26.6% of respondents definitively plan to stay. 47 of 128 respondents have considered leaving, 26 are seriously considering it, and 4 are actively planning departure.</div>
+        <span class="finding-tag" style="background:#E8F5F0;color:#2E6B6E" contenteditable="false">Brain Drain</span>
+      </div>
+      <div class="finding-cell fc-n">
+        <div class="finding-pct" contenteditable="false">82.7%</div>
+        <div class="finding-title" contenteditable="false">Report increased uncertainty about immigration status</div>
+        <div class="finding-desc" contenteditable="false">110 of 133 respondents face heightened legal uncertainty. 100 cannot travel internationally. 78 fear deportation despite lawful filings.</div>
+        <span class="finding-tag" style="background:#E8EDF5;color:#1A3A5C" contenteditable="false">Legal Status</span>
+      </div>
+      <div class="finding-cell fc-g">
+        <div class="finding-pct" contenteditable="false">83.8%</div>
+        <div class="finding-title" contenteditable="false">Hold at least a Bachelor's degree</div>
+        <div class="finding-desc" contenteditable="false">Master's holders are the largest group at 36.2%. Over 60% possess graduate-level qualifications. Tech and healthcare are the top sectors represented.</div>
+        <span class="finding-tag" style="background:#E0EFF8;color:#1B4F8A" contenteditable="false">High-Skilled</span>
+      </div>
+      <div class="finding-cell fc-o">
+        <div class="finding-pct" contenteditable="false">27.5%</div>
+        <div class="finding-title" contenteditable="false">Unemployed specifically due to lack of work authorization</div>
+        <div class="finding-desc" contenteditable="false">32 of 149 respondents lost their jobs due to expired work authorization that could not be renewed because of the pause—not due to market conditions.Many had prior incomes exceeding $100K. 69 cannot accept job offers.</div>
+        <span class="finding-tag" style="background:#E8F4F8;color:#1A3A5C" contenteditable="false">Employment</span>
+      </div>
+      <div class="finding-cell fc-d">
+        <div class="finding-pct" contenteditable="false">47.4%</div>
+        <div class="finding-title" contenteditable="false">Have taken on new debt due to the pause</div>
+        <div class="finding-desc" contenteditable="false">64 of 134 respondents accrued credit card debt, personal loans, or borrowed from family. 49 of 125 respondents depleted savings or retirement funds.</div>
+        <span class="finding-tag" style="background:#DCEAF7;color:#1B4F8A" contenteditable="false">Debt</span>
+      </div>
+      <div class="finding-cell fc-s">
+        <div class="finding-pct" contenteditable="false">62.3%</div>
+        <div class="finding-title" contenteditable="false">Unable to visit sick or dying family members</div>
+        <div class="finding-desc" contenteditable="false">With advance Parole (I-131) processing frozen, 82 of 130 respondents missed important family events, 29 have delayed having children, and 11 physically separated from spouse or children.</div>
+        <span class="finding-tag" style="background:#E8F5F0;color:#2E6B6E" contenteditable="false">Family</span>
+      </div>
+      <div class="finding-cell fc-dr">
+        <div class="finding-pct" contenteditable="false">70.1%</div>
+        <div class="finding-title" contenteditable="false">Are married, with 44.3% supporting dependents</div>
+        <div class="finding-desc" contenteditable="false">The pause destabilizes entire family units. 87.4% have lived in the U.S for 3+ years, and 66.9% attended school in the U.S. These are not recent arrivals.</div>
+        <span class="finding-tag" style="background:#E8EDF5;color:#1A3A5C" contenteditable="false">Demographics</span>
+      </div>
+      <div class="finding-cell fc-o">
+        <div class="finding-pct" contenteditable="false">30%</div>
+        <div class="finding-title" contenteditable="false">Report direct educational disruption</div>
+        <div class="finding-desc" contenteditable="false">14 of 110 respondents paused or dropped out of academic programs. 11 cannot afford tuition. 7 are blocked from OPT/STEM-OPT transitions. 6 lost scholarships or research assistantships.</div>
+        <span class="finding-tag" style="background:#E8EDF5;color:#2E6B9E" contenteditable="false">Education</span>
+      </div>
+      <div class="finding-cell fc-a">
+        <div class="finding-pct" contenteditable="false">44.6%</div>
+        <div class="finding-title" contenteditable="false">Report at least one housing-related consequence</div>
+        <div class="finding-desc" contenteditable="false">23 of 112 moved in with family or friends, in which 70% of them unemployed due to authorization. 19 had to move to cheaper housing. 18 cannot sign a lease 10 are homeless or at risk. 55% of housing-impacted respondents also took on new debt.</div>
+        <span class="finding-tag" style="background:#FBF5D8;color:#7A5010" contenteditable="false">Housing</span>
+      </div>
+      <div class="finding-cell fc-n">
+        <div class="finding-pct" contenteditable="false">35.4%</div>
+        <div class="finding-title" contenteditable="false">Earned $100,000 or more annually in the U.S.</div>
+        <div class="finding-desc" contenteditable="false">73.4% have over 3 years of U.S. work experience. 21 of 125 respondents paid over $100K in total federal taxes. Tech/IT (30) and Healthcare (29) are the most affected sectors, both facing documented U.S. labor shortages. This is a high-earning, high-contributing workforce being sidelined by policy, not market failure.</div>
+        <span class="finding-tag" style="background:#E0EFF8;color:#1B4F8A" contenteditable="false">Economy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- INFOGRAPHICS -->
+<section style="background:var(--surface)" id="infographics" class="block-wrap">
+  <div class="block-controls">
+    <button class="bc-btn bc-up" onclick="moveBlock(this,'up')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 11V3M3.5 6.5L7 3l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-down" onclick="moveBlock(this,'down')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3.5 7.5L7 11l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-del" onclick="toggleBlock(this.closest('.block-wrap'))"><svg viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="section-inner">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem">
+      <div>
+        <div class="sec-label" contenteditable="false">Infographics</div>
+        <h2 class="sec-title" contenteditable="false">Data, visualized</h2>
+        <p class="sec-body" contenteditable="false" style="margin-bottom:0">Explore interactive charts and downloadable graphics covering different dimensions of the adjudication pause's impact.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-top:2rem;flex-shrink:0">
+        <a href="#" class="btn btn-primary btn-editable" id="btn-all-graphics" onclick="handleBtnClick(event,'btn-all-graphics')"><span class="btn-label">Download All Graphics</span></a>
+      </div>
+    </div>
+    <div class="infographic-grid">
+
+      <!-- 1: Countries Pie Chart -->
+      <div class="infographic-card chart-card">
+        <div class="infographic-thumb has-chart">
+          <div class="infographic-thumb-badge">Geography</div>
+          <div class="embed-slot" id="embed-0">
+            <div style="min-height:536px" id="datawrapper-vis-xgogF"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/xgogF/embed.js" charset="utf-8" data-target="#datawrapper-vis-xgogF"></script><noscript><img src="https://datawrapper.dwcdn.net/xgogF/full.png" alt="From 23+ Countries: The Geographic Reach of the USCIS Adjudication Pause (Pie Chart)" /></noscript></div>
+          </div>
+        </div>
+        <div class="infographic-body">
+          <div class="infographic-category" contenteditable="false">Geographic Origin</div>
+          <div class="infographic-title" contenteditable="false">From 23+ countries: The geographic reach of the adjudication pause</div>
+          <div class="infographic-desc" contenteditable="false">Respondents originate from 23 of the 39 affected countries. Respondents represent four world regions, with Sub-Saharan Africa (47%) and Latin America & Caribbean (25%) together accounting for more than 7 in 10 survey participants.</div>
+          <div class="infographic-meta"><span contenteditable="false">Pie Chart · 143 respondents</span><span class="infographic-dl">Download PNG</span></div>
+        </div>
+      </div>
+
+      <!-- 2: Industry Table -->
+      <div class="infographic-card chart-card">
+        <div class="infographic-thumb has-chart">
+          <div class="infographic-thumb-badge">Workforce</div>
+          <div class="embed-slot" id="embed-1">
+            <div style="min-height:774px" id="datawrapper-vis-6mbWs"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/6mbWs/embed.js" charset="utf-8" data-target="#datawrapper-vis-6mbWs"></script><noscript><img src="https://datawrapper.dwcdn.net/6mbWs/full.png" alt="The Pulse of the Workforce: Tech and Healthcare Hit Hardest (Table)" /></noscript></div>
+          </div>
+        </div>
+        <div class="infographic-body">
+          <div class="infographic-category" contenteditable="false">Sector Impact</div>
+          <div class="infographic-title" contenteditable="false">The pulse of the workforce: Tech and healthcare hit hardest</div>
+          <div class="infographic-desc" contenteditable="false">Technology/IT (30) and Healthcare (29) are the most represented sectors — both facing well-documented U.S. labor shortages. Finance and engineering are also heavily affected.</div>
+          <div class="infographic-meta"><span contenteditable="false">Table · 138 respondents</span><span class="infographic-dl">Download PNG</span></div>
+        </div>
+      </div>
+
+      <!-- 3: Education Column Chart -->
+      <div class="infographic-card chart-card">
+        <div class="infographic-thumb has-chart">
+          <div class="infographic-thumb-badge">Featured</div>
+          <div class="embed-slot" id="embed-2">
+            <div style="min-height:704px" id="datawrapper-vis-LH2TB"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/LH2TB/embed.js" charset="utf-8" data-target="#datawrapper-vis-LH2TB"></script><noscript><img src="https://datawrapper.dwcdn.net/LH2TB/full.png" alt="A High-Skilled Crisis: Educational Background of Affected Individuals (Column Chart)" /></noscript></div>
+          </div>
+        </div>
+        <div class="infographic-body">
+          <div class="infographic-category" contenteditable="false">Demographics</div>
+          <div class="infographic-title" contenteditable="false">A high-skilled crisis: Educational background of affected individuals</div>
+          <div class="infographic-desc" contenteditable="false">Among 149 respondents, 83% hold at least a bachelor’s degree and more than 60% of respondents possess a graduate-level qualification. This reflects a highly skilled pool of human capital, indicating that the adjudication pause is a direct constraint on one of the most educated segments of the immigrant workforce. </div>
+          <div class="infographic-meta"><span contenteditable="false">Column Chart · 149 respondents</span><span class="infographic-dl">Download PNG</span></div>
+        </div>
+      </div>
+
+      <!-- 4: Choropleth Map -->
+      <div class="infographic-card chart-card">
+        <div class="infographic-thumb has-chart">
+          <div class="infographic-thumb-badge">Geography</div>
+          <div class="embed-slot" id="embed-3">
+            <div style="min-height:582px" id="datawrapper-vis-NfiBW"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/NfiBW/embed.js" charset="utf-8" data-target="#datawrapper-vis-NfiBW"></script><noscript><img src="https://datawrapper.dwcdn.net/NfiBW/full.png" alt="The Nationwide Reach of the USCIS Adjudication Pause Impact Report (Choropleth map)" /></noscript></div>
+          </div>
+        </div>
+        <div class="infographic-body">
+          <div class="infographic-category" contenteditable="false">Geographic Distribution</div>
+          <div class="infographic-title" contenteditable="false">Nationwide reach of the USCIS adjudication pause</div>
+          <div class="infographic-desc" contenteditable="false">Respondents span 31 states. FL (23), TX (22), CA (13), NY (13) account for ~49% of all respondents. This is a nationwide impact, not a regional one.</div>
+          <div class="infographic-meta"><span contenteditable="false">Choropleth Map · 145 respondents</span><span class="infographic-dl">Download PNG</span></div>
+        </div>
+      </div>
+
+      <!-- 5: Employment Column Chart -->
+      <div class="infographic-card chart-card">
+        <div class="infographic-thumb has-chart">
+          <div class="infographic-thumb-badge">Employment</div>
+          <div class="embed-slot" id="embed-4">
+            <div style="min-height:567px" id="datawrapper-vis-Rir0Z"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/Rir0Z/embed.js" charset="utf-8" data-target="#datawrapper-vis-Rir0Z"></script><noscript><img src="https://datawrapper.dwcdn.net/Rir0Z/full.png" alt="Sidelined: Employment Impacts of the USCIS Adjudication Pause (Column Chart)" /></noscript></div>
+          </div>
+        </div>
+        <div class="infographic-body">
+          <div class="infographic-category" contenteditable="false">Employment Impact</div>
+          <div class="infographic-title" contenteditable="false">Sidelined: Employment impacts of the adjudication pause</div>
+          <div class="infographic-desc" contenteditable="false">69 of 132 unable to accept new job offers. 43 cannot change jobs or accept promotions. 32 lost jobs when EADs expired. 24.2% lost jobs due to policy, not market conditions.</div>
+          <div class="infographic-meta"><span contenteditable="false">Column Chart · 149 respondents</span><span class="infographic-dl">Download PNG</span></div>
+        </div>
+      </div>
+
+      <!-- 6: Mental Health Donut -->
+      <div class="infographic-card chart-card">
+        <div class="infographic-thumb has-chart">
+          <div class="infographic-thumb-badge">Mental Health</div>
+          <div class="embed-slot" id="embed-5">
+            <div style="min-height:427px" id="datawrapper-vis-TnHP8"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/TnHP8/embed.js" charset="utf-8" data-target="#datawrapper-vis-TnHP8"></script><noscript><img src="https://datawrapper.dwcdn.net/TnHP8/full.png" alt="The Psychological Toll of the Adjudication Pause (Small multiple donut chart)" /></noscript></div>
+          </div>
+        </div>
+        <div class="infographic-body">
+          <div class="infographic-category" contenteditable="false">Mental Health</div>
+          <div class="infographic-title" contenteditable="false">The psychological toll of the adjudication pause</div>
+          <div class="infographic-desc" contenteditable="false">The data further reveals a pattern of cumulative and overlapping health impacts. Nearly half of respondents (48.7%, or 92 individuals) reported experiencing three or more distinct health consequences simultaneously, with an average of 2.16 reported impacts per affected individual.</div>
+          <div class="infographic-meta"><span contenteditable="false">Donut Chart · 127 respondents</span><span class="infographic-dl">Download PNG</span></div>
+        </div>
+      </div>
+
+      <!-- 7: Financial Stacked Bars -->
+      <div class="infographic-card chart-card">
+        <div class="infographic-thumb has-chart">
+          <div class="infographic-thumb-badge">Financial</div>
+          <div class="embed-slot" id="embed-6">
+            <div style="min-height:371px" id="datawrapper-vis-ou7OQ"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/ou7OQ/embed.js" charset="utf-8" data-target="#datawrapper-vis-ou7OQ"></script><noscript><img src="https://datawrapper.dwcdn.net/ou7OQ/full.png" alt="The Sunk Cost of Residency: High Financial Stakes of the Adjudication Pause (Stacked Bars)" /></noscript></div>
+          </div>
+        </div>
+        <div class="infographic-body">
+          <div class="infographic-category" contenteditable="false">Financial Stakes</div>
+          <div class="infographic-title" contenteditable="false">The sunk cost of residency: High financial stakes of the adjudication pause</div>
+          <div class="infographic-desc" contenteditable="false">For many, total out-of-pocket immigration-related expenses exceed $15,000 to $25,000, representing significant financial investments into a process that has now been indefinitely paused.</div>
+          <div class="infographic-meta"><span contenteditable="false">Stacked Bars · 134 respondents</span><span class="infographic-dl">Download PNG</span></div>
+        </div>
+      </div>
+
+      <!-- 8: Professional Experience Grouped Bars -->
+      <div class="infographic-card chart-card">
+        <div class="infographic-thumb has-chart">
+          <div class="infographic-thumb-badge">Economy</div>
+          <div class="embed-slot" id="embed-7">
+            <div style="min-height:801px" id="datawrapper-vis-t7PAW"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/t7PAW/embed.js" charset="utf-8" data-target="#datawrapper-vis-t7PAW"></script><noscript><img src="https://datawrapper.dwcdn.net/t7PAW/full.png" alt="Not Entry-Level: The Professional Experience Lost to the Adjudication Pause (Grouped Bars)" /></noscript></div>
+          </div>
+        </div>
+        <div class="infographic-body">
+          <div class="infographic-category" contenteditable="false">Workforce Experience</div>
+          <div class="infographic-title" contenteditable="false">Not entry-level: The professional experience lost to the adjudication pause</div>
+          <div class="infographic-desc" contenteditable="false">The largest group (33.3%) reports 6–10 years of professional experience. 60.8% have 3–10 years of U.S. work experience. These are mid-career professionals, not newcomers.</div>
+          <div class="infographic-meta"><span contenteditable="false">Grouped Bars · 145 respondents</span><span class="infographic-dl">Download PNG</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FULL REPORT -->
+<section style="background:var(--white)" id="report" class="block-wrap">
+  <div class="block-controls">
+    <button class="bc-btn bc-up" onclick="moveBlock(this,'up')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 11V3M3.5 6.5L7 3l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-down" onclick="moveBlock(this,'down')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3.5 7.5L7 11l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-del" onclick="toggleBlock(this.closest('.block-wrap'))"><svg viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="section-inner">
+    <div class="sec-label" contenteditable="false">Full Report</div>
+    <h2 class="sec-title" contenteditable="false">Navigate the report</h2>
+    <p class="sec-body" contenteditable="false">The full report spans 10 chapters covering every dimension of the adjudication pause's impact. Download the complete document or preview chapter summaries below.</p>
+    <div class="report-toc">
+      <div class="toc-nav">
+        <div class="toc-item active" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">01</span><span contenteditable="false">Executive Summary</span></div>
+        <div class="toc-item" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">02</span><span contenteditable="false">Background &amp; Policy Context</span></div>
+        <div class="toc-item" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">03</span><span contenteditable="false">Purpose &amp; Methodology</span></div>
+        <div class="toc-item" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">04</span><span contenteditable="false">Respondent Demographics</span></div>
+        <div class="toc-item" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">05</span><span contenteditable="false">Immigration Status &amp; Applications</span></div>
+        <div class="toc-item" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">06</span><span contenteditable="false">Employment &amp; Economic Profile</span></div>
+        <div class="toc-item" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">07</span><span contenteditable="false">Direct Impact (7 Domains)</span></div>
+        <div class="toc-item" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">08</span><span contenteditable="false">Brain Drain &amp; Future Intentions</span></div>
+        <div class="toc-item" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">09</span><span contenteditable="false">Policy Recommendations</span></div>
+        <div class="toc-item" onclick="highlightToc(this);showComingSoon()"><span class="toc-num">10</span><span contenteditable="false">Conclusion</span></div>
+      </div>
+      <div class="report-chapters">
+        <div class="chapter-card" onclick="showComingSoon()"><div class="chapter-num" contenteditable="false">Chapter 01</div><div class="chapter-title" contenteditable="false">Executive Summary</div><div class="chapter-desc" contenteditable="false">189 survey respondents, 23+ nationalities, 31 states. Reveals widespread employment disruption, financial destabilization, and significant brain drain risk among highly skilled immigrants.</div><div class="chapter-arrow"><span>Read chapter →</span></div></div>
+        <div class="chapter-card" onclick="showComingSoon()"><div class="chapter-num" contenteditable="false">Chapter 02</div><div class="chapter-title" contenteditable="false">Background &amp; Policy Context</div><div class="chapter-desc" contenteditable="false">Three USCIS policy memos (PM-602-0192, 0193, 0194) froze adjudication for nationals of 39 countries under Executive Order 14161. These measures included broad application freezes, expanded vetting, and retroactive re-review of previously approved cases, creating a system-wide pause affecting both immigrant and non-immigrant petitions, even for applicants who had already completed most procedural steps.</div><div class="chapter-arrow"><span>Read chapter →</span></div></div>
+        <div class="chapter-card" onclick="showComingSoon()"><div class="chapter-num" contenteditable="false">Chapter 07</div><div class="chapter-title" contenteditable="false">Direct Impact Across 7 Life Domains</div><div class="chapter-desc" contenteditable="false">Employment (27.5% unemployed), financial (75.2% impacted), education (30% impacted), housing (44.6% affected), family (62.3% cannot visit sick relatives), legal (82.7% increased uncertainty), and health (96.2% adverse outcomes).</div><div class="chapter-arrow"><span>Read chapter →</span></div></div>
+        <div class="chapter-card" onclick="showComingSoon()"><div class="chapter-num" contenteditable="false">Chapter 08</div><div class="chapter-title" contenteditable="false">Brain Drain &amp; Future Intentions</div><div class="chapter-desc" contenteditable="false">60.9% are considering leaving the U.S. Preferred destinations include Canada, Europe, and Australia. Housing-impacted respondents show even stronger emigration intent.</div><div class="chapter-arrow"><span>Read chapter →</span></div></div>
+        <div class="chapter-card" onclick="showComingSoon()"><div class="chapter-num" contenteditable="false">Chapter 09</div><div class="chapter-title" contenteditable="false">Policy Recommendations</div><div class="chapter-desc" contenteditable="false">Resume adjudications immediately. Treat the issuance of employment authorization and travel documents as a critical matter. Mandate transparent timelines. Refund premium processing fees. OPT-specific relief. Congressional oversight.</div><div class="chapter-arrow"><span>Read chapter →</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ARTICLES -->
+<section style="background:var(--white)" id="articles" class="block-wrap">
+  <div class="block-controls">
+    <button class="bc-btn bc-up" onclick="moveBlock(this,'up')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 11V3M3.5 6.5L7 3l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-down" onclick="moveBlock(this,'down')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3.5 7.5L7 11l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-del" onclick="toggleBlock(this.closest('.block-wrap'))"><svg viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="section-inner">
+    <div class="sec-label" contenteditable="false">Articles &amp; Analysis</div>
+    <h2 class="sec-title" contenteditable="false">Deeper reading</h2>
+    <p class="sec-body" contenteditable="false">Explainers, op-eds, and policy briefs contextualizing the report's findings within the broader immigration policy landscape.</p>
+    <div class="articles-grid">
+      <a class="article-card" href="article-economy.html" style="text-decoration:none;display:block;"><span class="article-tag" style="background:#E0EFF8;color:#1B4F8A" contenteditable="false">Economic Policy</span><div class="article-title" contenteditable="false">The $100K question: How forced unemployment is draining immigrant talent from the U.S. economy</div><div class="article-excerpt" contenteditable="false">26.5% of respondents reporting income loss have lost over $100,000. With 60.9% considering emigration, the pause risks accelerating brain drain among highly skilled workers in tech, healthcare, and finance.</div><div class="article-meta" contenteditable="false">Analysis · 5 min read</div></a>
+      <a class="article-card" href="#" onclick="showComingSoon();return false;" style="text-decoration:none;display:block;"><span class="article-tag" style="background:#DCEAF7;color:#1B4F8A" contenteditable="false">Mental Health</span><div class="article-title" contenteditable="false">Stress at the maximum: The mental health crisis behind the USCIS backlog</div><div class="article-excerpt" contenteditable="false">96.2% report adverse health outcomes. The median stress score is the maximum possible: 10/10. 32 respondents cannot afford mental health care, deepening a cycle that feeds emigration intent.</div><div class="article-meta" contenteditable="false" style="display:flex;align-items:center;gap:7px">Explainer · 4 min read <span style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:#FBF3D9;color:#7A5010;padding:2px 8px;border-radius:3px">Coming Soon</span></div></a>
+      <a class="article-card" href="#" onclick="showComingSoon();return false;" style="text-decoration:none;display:block;"><span class="article-tag" style="background:#E8EDF5;color:#1A3A5C" contenteditable="false">Legal</span><div class="article-title" contenteditable="false">39 countries, 3 memos, zero timelines: Understanding the adjudication hold</div><div class="article-excerpt" contenteditable="false">From PM-602-0192 to the retroactive review provision, a plain-language breakdown of the policy framework, its scope, and the limited exceptions available to affected individuals.</div><div class="article-meta" contenteditable="false" style="display:flex;align-items:center;gap:7px">Legal Brief · 6 min read <span style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:#FBF3D9;color:#7A5010;padding:2px 8px;border-radius:3px">Coming Soon</span></div></a>
+      <a class="article-card" href="#" onclick="showComingSoon();return false;" style="text-decoration:none;display:block;"><span class="article-tag" style="background:#E8F0F8;color:#1A3A5C" contenteditable="false">Housing</span><div class="article-title" contenteditable="false">When EADs expire, housing collapses: The chain from authorization to eviction</div><div class="article-excerpt" contenteditable="false">Every respondent with a housing impact also reported a health consequence. Women are disproportionately in acute displacement categories. Housing instability predicts emigration intent.</div><div class="article-meta" contenteditable="false" style="display:flex;align-items:center;gap:7px">Data Brief · 3 min read <span style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:#FBF3D9;color:#7A5010;padding:2px 8px;border-radius:3px">Coming Soon</span></div></a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HUMAN STORIES -->
+<section style="background:var(--bg);padding:3.5rem 2rem" id="stories" class="block-wrap">
+  <div class="block-controls" style="top:8px;right:8px">
+    <button class="bc-btn bc-up" onclick="moveBlock(this,'up')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 11V3M3.5 6.5L7 3l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-down" onclick="moveBlock(this,'down')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3.5 7.5L7 11l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-del" onclick="toggleBlock(this.closest('.block-wrap'))"><svg viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="section-inner">
+    <div class="sec-label" contenteditable="false">Human Stories</div>
+    <h2 class="sec-title" contenteditable="false">Behind the data: Real voices</h2>
+    <p class="sec-body" style="margin-bottom:0" contenteditable="false">These are not statistics. They are the words of people whose lives have been impacted by the USCIS adjudication pause — physicians, parents, spouses, survivors, and long-serving workers who followed every rule and are now waiting indefinitely for answers.</p>
+
+    <div class="stories-carousel-wrap">
+      <!-- Prev button -->
+      <button class="s-nav s-prev" id="sprev" onclick="storiesPrev()" aria-label="Previous story">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9l5 5" stroke="var(--deep-navy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <!-- Track -->
+      <div class="stories-outer" id="stories-outer">
+        <div class="stories-track" id="stories-track">
+
+          <!-- Story 1 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#2E6B6E"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#E6F5F4;color:#1A5E5C">Family Separation</span>
+              <p class="story-text">The mother of my 12-year-old child died. I could not travel to be with my child because if I leave the US now, I cannot return. My child cannot join me here because of the adjudication pause.</p>
+              <div class="story-attr">— A Parent Separated from Their Child</div>
+            </div>
+          </div>
+
+          <!-- Story 2 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#7C3AED"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#F3EFFF;color:#6D28D9">Family Impact</span>
+              <p class="story-text">My family is the most affected. My husband is about to lose his job because they refuse to renew his CDL license. My daughter wanted to go to college to study veterinary medicine, but I can't afford college — it's been three years now, wasted in community college that I'm paying out of pocket. She was so hopeful until now. The whole process is on hold and she ended up being diagnosed with depression. We can't go anywhere.</p>
+              <div class="story-attr">— A Family's Life Put on Hold</div>
+            </div>
+          </div>
+
+          <!-- Story 3 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#C0392B"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#FDECEA;color:#991B1B">Domestic Crisis</span>
+              <p class="story-text">My I-485 was denied due to a clerical error and we filed an I-290B motion to reopen. But since November 2025, there has been no approval to return my I-485 to pending status. I am currently undergoing severe domestic abuse and have been abandoned by my husband since January 30, 2026. I cannot feed myself. I haven't eaten for two days straight. My husband has cut off everything, including the internet, and says he won't be paying rent next month — so not only am I destitute, but I am also going to be homeless. If only my I-290B would be approved so my I-485 could go back to pending and my EAD could become active again, then I'll be able to survive.</p>
+              <div class="story-attr">— A Survivor of Domestic Abuse</div>
+            </div>
+          </div>
+
+          <!-- Story 4 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#1B4F8A"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#E0EFF8;color:#1B4F8A">Healthcare</span>
+              <p class="story-text">This pause was imposed with no warning and no workable pathway forward. It has stripped our livelihood and any chance of stability, replacing it with indefinite waiting and total uncertainty. We followed immigration law meticulously, worked, paid taxes, and served Americans — including veterans. Now, even our basic safety net is at risk. My spouse depends on employer-based health insurance, and this policy puts that coverage in jeopardy.</p>
+              <div class="story-attr">— Two Physicians, No Path Forward</div>
+            </div>
+          </div>
+
+          <!-- Story 5 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#0891B2"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#E0F7FA;color:#0C6F8E">Medical Training</span>
+              <p class="story-text">I am a physician in training who has lost a residency spot, losing years of hard study and money to secure a position through the Match. My patients lost their primary care physician, and I held an active leadership position in my state medical organization.</p>
+              <div class="story-attr">— A Physician in Training</div>
+            </div>
+          </div>
+
+          <!-- Story 6 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#1A3A5C"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#E8EDF5;color:#1A3A5C">Military Family</span>
+              <p class="story-text">My wife is in the military, and the pause is greatly impacting her ability to take jobs outside the country to advance in her career. I planned on joining the military, but the pause has stopped those plans because I am not a resident — despite being married to an active-duty US military member.</p>
+              <div class="story-attr">— A Military Family Torn Apart</div>
+            </div>
+          </div>
+
+          <!-- Story 7 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#2A7A4B"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#E8F5EE;color:#1E5C37">Parenting</span>
+              <p class="story-text">I had to withdraw my child from daycare, which is essentially beneficial to his development. My family is dependent on my income and I could not work for six months.</p>
+              <div class="story-attr">— A Parent Struggling to Provide</div>
+            </div>
+          </div>
+
+          <!-- Story 8 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#E11D48"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#FFF0F3;color:#BE123C">Life Planning</span>
+              <p class="story-text">I have had to delay a wedding ceremony and cannot plan for the future as my job future is uncertain.</p>
+              <div class="story-attr">— A Wedding Delayed, A Future Frozen</div>
+            </div>
+          </div>
+
+          <!-- Story 9 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#D4A017"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#FBF5D8;color:#7A5010">Government Service</span>
+              <p class="story-text">In this economy, I have managed to get two jobs. The first I lost because of the shutdown in November. The second I am about to lose because of this travel ban. I've lived more of my life here than in my home country. I've worked for the government for over a decade.</p>
+              <div class="story-attr">— A Decade of Government Service, Two Jobs Lost</div>
+            </div>
+          </div>
+
+          <!-- Story 10 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#7C3AED"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#F3EFFF;color:#6D28D9">Family Planning</span>
+              <p class="story-text">This pause has been mentally and physically draining me and my family. My plans for a wedding and having children are delayed. I can't visit my sick family members, and when my family needed me, I couldn't be there.</p>
+              <div class="story-attr">— Family Planning on Hold</div>
+            </div>
+          </div>
+
+          <!-- Story 11 -->
+          <div class="story-card">
+            <div class="story-card-bar" style="background:#EA580C"></div>
+            <div class="story-card-body">
+              <div class="story-bg-qmark">"</div>
+              <span class="story-cat" style="background:#FEF3E8;color:#C2410C">Legal Status</span>
+              <p class="story-text">I am eligible to apply for citizenship, but I am worried that the pause will affect my application. The removal of conditions process takes forever, and I am nervous about what happens after my I-797 expires and I lose my status because of the pause.</p>
+              <div class="story-attr">— Fear of Losing Status After Years of Compliance</div>
+            </div>
+          </div>
+
+        </div><!-- /stories-track -->
+      </div><!-- /stories-outer -->
+
+      <!-- Next button -->
+      <button class="s-nav s-next" id="snext" onclick="storiesNext()" aria-label="Next story">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4l5 5-5 5" stroke="var(--deep-navy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div><!-- /stories-carousel-wrap -->
+
+    <!-- Dots + counter -->
+    <div class="s-footer">
+      <div id="sdots" style="display:flex;gap:7px;align-items:center"></div>
+      <span class="s-counter" id="s-counter"></span>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- POLICY RECS -->
+<section style="background:var(--surface)" id="policy" class="block-wrap">
+  <div class="block-controls">
+    <button class="bc-btn bc-up" onclick="moveBlock(this,'up')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 11V3M3.5 6.5L7 3l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-down" onclick="moveBlock(this,'down')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3.5 7.5L7 11l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-del" onclick="toggleBlock(this.closest('.block-wrap'))"><svg viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="section-inner">
+    <div class="sec-label" contenteditable="false">Policy Recommendations</div>
+    <h2 class="sec-title" contenteditable="false">The path forward</h2>
+    <p class="sec-body" contenteditable="false">These recommendations aim to address both the immediate challenges identified in the data and the broader structural issues contributing to workforce instability among highly skilled immigrants. Without timely intervention, the United States risks not only losing critical talent but also eroding its long-term economic and competitive advantage.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:1.5rem">
+      <div class="rec-item" style="border-left-color:var(--warm-teal)"><div class="rec-num" style="background:#E8F0F0;color:var(--warm-teal)">1</div><div><div class="rec-title" contenteditable="false">Resume immigration adjudication processes immediately</div><div class="rec-body" contenteditable="false">Priority should be given to individuals whose applications have been delayed or placed on hold. Many affected individuals are at risk of falling out of legal status or have already lost employment opportunities due to circumstances beyond their control. Prioritizing these cases would help mitigate further economic and personal harm.</div></div></div>
+      <div class="rec-item" style="border-left-color:var(--warm-red)"><div class="rec-num" style="background:#FCEAE8;color:var(--warm-red)">2</div><div><div class="rec-title" contenteditable="false">Treat the timely issuance of work authorization as a critical priority</div><div class="rec-body" contenteditable="false">The adjudication of Employment Authorization Documents (EADs) should be resumed without further delay to ensure that eligible individuals can re-enter or remain in the workforce. Preventing unnecessary gaps in employment authorization is essential to maintaining both individual financial stability and broader economic productivity.</div></div></div>
+      <div class="rec-item" style="border-left-color:var(--steel-blue)"><div class="rec-num" style="background:#E8EDF5;color:var(--steel-blue)">3</div><div><div class="rec-title" contenteditable="false">Resume I-131 adjudication and treat travel documents as a humanitarian priority</div><div class="rec-body" contenteditable="false">The prolonged pause has severed the ability of affected individuals to visit critically ill or dying family members, attend funerals, support spouses and children abroad, and fulfill basic familial obligations. Applications involving documented medical emergencies, terminal illness of a family member, bereavement travel, or separation from minor children should be prioritized for expedited review and adjudication. USCIS already maintains an expedite criteria framework; it should be actively and broadly applied to all Form I-131 applications submitted during or impacted by the pause.</div></div></div>
+      <div class="rec-item" style="border-left-color:var(--amber)"><div class="rec-num" style="background:#FBF3D9;color:var(--amber)">4</div><div><div class="rec-title" contenteditable="false">Greater transparency in processing timelines</div><div class="rec-body" contenteditable="false">USCIS should be required to publish clear, accurate, and regularly updated processing timelines. Applicants experiencing delays exceeding six months should receive proactive communication regarding the status of their cases, with mechanisms in place to ensure accountability for prolonged inaction.</div></div></div>
+      <div class="rec-item" style="border-left-color:var(--burnt-orange)"><div class="rec-num" style="background:#FDF0E6;color:var(--burnt-orange)">5</div><div><div class="rec-title" contenteditable="false">Clear and accessible exemption pathways for severe hardship</div><div class="rec-body" contenteditable="false">Current evidence suggests that attempts to obtain exemptions have largely been unsuccessful, indicating a lack of clarity and consistency in the process. A standardized and transparent exemption framework would provide relief to those in urgent need while ensuring fairness in adjudication.</div></div></div>
+      <div class="rec-item" style="border-left-color:var(--warm-red)"><div class="rec-num" style="background:#FCEAE8;color:var(--warm-red)">6</div><div><div class="rec-title" contenteditable="false">Targeted relief for OPT and STEM-OPT participants</div><div class="rec-body" contenteditable="false">A model similar to the temporary flexibilities introduced during the COVID-19 pandemic, such as extensions or pauses in unemployment accrual, could help prevent long-term disruptions to career trajectories. Similar protections should extend to STEM OPT participants to ensure continuity of employment and skill development.</div></div></div>
+      <div class="rec-item" style="border-left-color:var(--gold)"><div class="rec-num" style="background:#FBF3D9;color:var(--gold)">7</div><div><div class="rec-title" contenteditable="false">Refund premium processing fees for unprocessed cases</div><div class="rec-body" contenteditable="false">Applicants, including those in OPT, EB-1A, and EB-2 NIW categories, paid for expedited adjudication they did not receive. The suspension has effectively nullified the core benefit of premium processing. A refund mechanism should be implemented for all applicants who did not receive adjudication within the guaranteed timeframe as a direct result of the policy pause.</div></div></div>
+      <div class="rec-item" style="border-left-color:var(--deep-red)"><div class="rec-num" style="background:#F9EDEE;color:var(--deep-red)">8</div><div><div class="rec-title" contenteditable="false">Stronger oversight mechanisms to prevent recurrence</div><div class="rec-body" contenteditable="false">A Congressionally mandated review process should be established to evaluate the necessity, scope, and potential impact of any future adjudication pauses before they are implemented. This would introduce an additional layer of accountability and help ensure that policy decisions do not inadvertently undermine economic stability or workforce participation.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section block-wrap" id="cta">
+  <div class="block-controls" style="top:8px;right:8px">
+    <button class="bc-btn bc-up" onclick="moveBlock(this,'up')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 11V3M3.5 6.5L7 3l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="bc-btn bc-down" onclick="moveBlock(this,'down')"><svg viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3.5 7.5L7 11l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="cta-inner">
+    <h2 class="cta-title" contenteditable="false">Your story matters.<br><em>Help amplify the data.</em></h2>
+    <p class="cta-body" contenteditable="false">Share this report with elected representatives, legal advocates, and community networks. This evidence demands urgent policy action.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-gold" id="btn-cta-download" onclick="showComingSoon();return false;"><span class="btn-label">Download Full Report</span></a>
+      <div style="position:relative;display:inline-flex">
+        <button class="btn btn-teal" id="btn-cta-share" onclick="ctaShare(event)" style="border:none;cursor:pointer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          <span class="btn-label">Share This Page</span>
+        </button>
+        <div id="share-cta-drop" style="display:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 12px;box-shadow:0 10px 32px rgba(26,58,92,.16);z-index:500;min-width:210px;text-align:left">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;padding:0 6px">Share via</div>
+          <a href="#" onclick="shareVia('twitter');return false;" class="share-drop-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.736-8.859L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>Share on X / Twitter</span></a>
+          <a href="#" onclick="shareVia('linkedin');return false;" class="share-drop-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span>Share on LinkedIn</span></a>
+          <a href="#" onclick="shareVia('facebook');return false;" class="share-drop-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span>Share on Facebook</span></a>
+          <a href="#" onclick="shareVia('email');return false;" class="share-drop-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round"/></svg><span>Share via Email</span></a>
+          <div style="height:1px;background:var(--border);margin:8px 4px"></div>
+          <a href="#" onclick="ctaCopyLink(this);return false;" class="share-drop-item" id="share-copy-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-linecap="round"/></svg><span>Copy Link</span></a>
+        </div>
+      </div>
+      <div style="position:relative;display:inline-flex">
+        <button class="btn btn-white-outline" id="btn-cta-contact" onclick="toggleContactDrop(event)" style="cursor:pointer"><span class="btn-label">Contact the Research Team</span></button>
+        <div id="contact-drop" style="display:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:0 10px 32px rgba(26,58,92,.16);z-index:500;min-width:290px;text-align:left;white-space:nowrap">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px">Research Team Contact</div>
+          <div style="display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:9px 12px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ocean-blue)" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round"/></svg>
+            <span style="font-size:13.5px;font-weight:600;color:var(--deep-navy);letter-spacing:.01em">adjudicationpausesurvey@gmail.com</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <a href="mailto:adjudicationpausesurvey@gmail.com" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 10px;border-radius:5px;background:var(--ocean-blue);color:#fff;text-decoration:none;font-size:12px;font-weight:600;transition:background .12s" onmouseover="this.style.background='var(--deep-navy)'" onmouseout="this.style.background='var(--ocean-blue)'">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round"/></svg>
+              Open in Email App
+            </a>
+            <button onclick="copyEmail(this)" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 10px;border-radius:5px;background:var(--surface);border:1px solid var(--border);color:var(--charcoal);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:background .12s" onmouseover="this.style.background='#dde6f0'" onmouseout="this.style.background='var(--surface)'">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-linecap="round"/></svg>
+              <span>Copy Address</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stripe"></div>
+
+<footer>
+  <p contenteditable="false">© 2026 · The Hidden Cost of Immigration Delays: Economic &amp; Human Impact of the USCIS Adjudication Pause · Independent Research</p>
+  <p style="margin-top:5px;font-size:11.5px" contenteditable="false">This report is for informational and advocacy purposes. Data reflects survey respondents and does not constitute legal advice. 189 respondents, Feb–Mar 2026.</p>
+</footer>
+
+<script>
+/* ── STORIES CAROUSEL ── */
+var storiesIdx = 0;
+var STORIES_TOTAL = 11;
+
+function stGetPV(){
+  return window.innerWidth < 700 ? 1 : 2;
+}
+
+function stUpdate(){
+  var pv = stGetPV();
+  var maxIdx = STORIES_TOTAL - pv;
+  storiesIdx = Math.max(0, Math.min(storiesIdx, maxIdx));
+
+  var track = document.getElementById('stories-track');
+  var outer = document.getElementById('stories-outer');
+  if(!track || !outer) return;
+
+  var ow = outer.offsetWidth;
+  var gap = 20;
+  var cw = (ow - gap * (pv - 1)) / pv;
+
+  /* resize all cards */
+  var cards = track.querySelectorAll('.story-card');
+  cards.forEach(function(c){
+    c.style.flex = '0 0 ' + cw + 'px';
+    c.style.minWidth = cw + 'px';
+  });
+
+  track.style.transform = 'translateX(-' + (storiesIdx * (cw + gap)) + 'px)';
+
+  /* prev / next buttons */
+  var p = document.getElementById('sprev');
+  var n = document.getElementById('snext');
+  if(p) p.disabled = storiesIdx <= 0;
+  if(n) n.disabled = storiesIdx >= maxIdx;
+
+  /* dots — one dot per scroll position */
+  var dotsEl = document.getElementById('sdots');
+  if(dotsEl){
+    var needed = maxIdx + 1;
+    if(dotsEl.children.length !== needed){
+      dotsEl.innerHTML = '';
+      for(var i = 0; i <= maxIdx; i++){
+        (function(idx){
+          var d = document.createElement('button');
+          d.className = 'stories-dot s-dot' + (idx === storiesIdx ? ' active' : '');
+          d.setAttribute('aria-label','Go to story ' + (idx+1));
+          d.onclick = function(){ storiesIdx = idx; stUpdate(); };
+          dotsEl.appendChild(d);
+        })(i);
+      }
+    } else {
+      Array.from(dotsEl.children).forEach(function(d,i){
+        d.classList.toggle('active', i === storiesIdx);
+      });
+    }
+  }
+
+  /* counter */
+  var ctr = document.getElementById('s-counter');
+  if(ctr){
+    var end = Math.min(storiesIdx + pv, STORIES_TOTAL);
+    ctr.textContent = (storiesIdx + 1) + '–' + end + ' of ' + STORIES_TOTAL;
+  }
+}
+
+function storiesPrev(){ storiesIdx = Math.max(0, storiesIdx - 1); stUpdate(); }
+function storiesNext(){ storiesIdx = Math.min(STORIES_TOTAL - stGetPV(), storiesIdx + 1); stUpdate(); }
+
+/* touch / swipe support */
+(function(){
+  var startX = 0;
+  document.addEventListener('DOMContentLoaded', function(){
+    var outer = document.getElementById('stories-outer');
+    if(!outer) return;
+    outer.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, {passive:true});
+    outer.addEventListener('touchend', function(e){
+      var dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 40){ dx < 0 ? storiesNext() : storiesPrev(); }
+    }, {passive:true});
+    stUpdate();
+  });
+  window.addEventListener('resize', function(){ stUpdate(); });
+})();
+/* ── END STORIES CAROUSEL ── */
+
+var editMode = false;
+var currentEmbedSlot = null;
+var currentBtnId = null;
+var currentNavItem = null;
+
+function toggleEditMode(){
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  var btn = document.getElementById('edit-toggle');
+  var status = document.getElementById('edit-status');
+  if(editMode){
+    btn.textContent = 'Done Editing';
+    btn.classList.add('active');
+    status.textContent = 'Edit mode — click text to edit';
+    document.querySelectorAll('[contenteditable]').forEach(function(el){ el.contentEditable = 'true'; });
+  } else {
+    btn.textContent = 'Edit Page';
+    btn.classList.remove('active');
+    status.textContent = 'View mode';
+    document.querySelectorAll('[contenteditable]').forEach(function(el){ el.contentEditable = 'false'; });
+  }
+}
+
+function toggleBlock(blockEl){
+  if(typeof blockEl === 'string') blockEl = document.getElementById(blockEl);
+  blockEl.style.display = blockEl.style.display === 'none' ? '' : 'none';
+}
+
+function moveBlock(btn, dir){
+  var block = btn.closest('.block-wrap');
+  var parent = block.parentNode;
+  if(dir === 'up'){
+    var prev = block.previousElementSibling;
+    while(prev && (prev.classList.contains('divider') || prev.tagName === 'NAV' || prev.classList.contains('section-nav') || prev.classList.contains('stripe') || prev.classList.contains('hero'))){ prev = prev.previousElementSibling; }
+    if(prev) parent.insertBefore(block, prev);
+  } else {
+    var next = block.nextElementSibling;
+    while(next && (next.classList.contains('divider') || next.classList.contains('cta-section'))){ next = next.nextElementSibling; }
+    if(next && next.nextSibling) parent.insertBefore(block, next.nextSibling);
+    else if(next) parent.appendChild(block);
+  }
+}
+
+function openEmbedModal(slotId){
+  if(!editMode) return;
+  currentEmbedSlot = slotId;
+  var slot = document.getElementById(slotId);
+  var iframe = slot.querySelector('iframe');
+  document.getElementById('embed-input').value = iframe ? slot.getAttribute('data-iframe') || '' : '';
+  var card = slot.closest('.infographic-card');
+  document.getElementById('embed-title-input').value = card ? card.querySelector('.infographic-title').textContent : '';
+  document.getElementById('embed-category-input').value = card ? card.querySelector('.infographic-category').textContent : '';
+  document.getElementById('embed-modal').classList.add('open');
+}
+
+function saveEmbed(){
+  var code = document.getElementById('embed-input').value.trim();
+  var title = document.getElementById('embed-title-input').value.trim();
+  var cat = document.getElementById('embed-category-input').value.trim();
+  var slot = document.getElementById(currentEmbedSlot);
+  slot.setAttribute('data-iframe', code);
+  if(code){
+    var tmp = document.createElement('div');
+    tmp.innerHTML = code;
+    var iframe = tmp.querySelector('iframe');
+    if(iframe){
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.border = 'none';
+      iframe.setAttribute('scrolling','no');
+      slot.innerHTML = '';
+      slot.appendChild(iframe);
+    } else {
+      slot.innerHTML = code;
+    }
+  } else {
+    slot.innerHTML = '<div class="embed-slot-placeholder"><div class="ep-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="10" width="3" height="6" rx="1" fill="#8B0000" opacity=".5"/><rect x="8" y="6" width="3" height="10" rx="1" fill="#8B0000" opacity=".7"/><rect x="13" y="2" width="3" height="14" rx="1" fill="#8B0000" opacity=".9"/></svg></div><strong>Click to add chart</strong><span>Paste Datawrapper iframe</span></div>';
+  }
+  var card = slot.closest('.infographic-card');
+  if(card){
+    if(title) card.querySelector('.infographic-title').textContent = title;
+    if(cat) card.querySelector('.infographic-category').textContent = cat;
+  }
+  closeModal('embed-modal');
+}
+
+var comingSoonBtns = ['btn-download-report','btn-pdf','btn-cta-download','btn-all-graphics'];
+
+function showComingSoon(){
+  if(!editMode) document.getElementById('coming-soon-modal').classList.add('open');
+}
+
+function handleBtnClick(e, btnId){
+  e.preventDefault();
+  if(editMode){
+    currentBtnId = btnId;
+    var btn = document.getElementById(btnId);
+    document.getElementById('link-input').value = btn.getAttribute('href') || '';
+    document.getElementById('link-label-input').value = btn.querySelector('.btn-label') ? btn.querySelector('.btn-label').textContent : '';
+    document.getElementById('link-modal').classList.add('open');
+  } else if(comingSoonBtns.indexOf(btnId) !== -1){
+    var btn = document.getElementById(btnId);
+    if(!btn.getAttribute('href') || btn.getAttribute('href') === '#'){
+      document.getElementById('coming-soon-modal').classList.add('open');
+    } else {
+      window.open(btn.getAttribute('href'), '_blank');
+    }
+  }
+}
+
+function saveLink(){
+  var url = document.getElementById('link-input').value.trim();
+  var label = document.getElementById('link-label-input').value.trim();
+  var btn = document.getElementById(currentBtnId);
+  if(url) btn.setAttribute('href', url);
+  if(label && btn.querySelector('.btn-label')) btn.querySelector('.btn-label').textContent = label;
+  closeModal('link-modal');
+}
+
+function addNavItem(){
+  currentNavItem = null;
+  document.getElementById('nav-label-input').value = 'New Link';
+  document.getElementById('nav-href-input').value = '#';
+  document.getElementById('nav-modal').classList.add('open');
+}
+
+function saveNavItem(){
+  var label = document.getElementById('nav-label-input').value.trim() || 'Link';
+  var href = document.getElementById('nav-href-input').value.trim() || '#';
+  if(currentNavItem){
+    currentNavItem.querySelector('a').textContent = label;
+    currentNavItem.querySelector('a').href = href;
+  } else {
+    var nav = document.getElementById('nav-links');
+    var addBtn = document.getElementById('add-nav-btn');
+    var item = document.createElement('div');
+    item.className = 'nav-link-item';
+    item.innerHTML = '<a href="'+href+'">'+label+'</a>';
+    item.addEventListener('click', function(e){ if(editMode){ e.preventDefault(); currentNavItem = item; document.getElementById('nav-label-input').value = item.querySelector('a').textContent; document.getElementById('nav-href-input').value = item.querySelector('a').getAttribute('href'); document.getElementById('nav-modal').classList.add('open'); } });
+    nav.insertBefore(item, addBtn);
+  }
+  closeModal('nav-modal');
+}
+
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.nav-link-item').forEach(function(item){
+  item.addEventListener('click', function(e){
+    if(editMode){
+      e.preventDefault();
+      currentNavItem = item;
+      document.getElementById('nav-label-input').value = item.querySelector('a').textContent;
+      document.getElementById('nav-href-input').value = item.querySelector('a').getAttribute('href');
+      document.getElementById('nav-modal').classList.add('open');
+    }
+  });
+});
+
+document.querySelectorAll('.modal-overlay').forEach(function(overlay){
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) overlay.classList.remove('open'); });
+});
+
+document.getElementById('coming-soon-modal').addEventListener('click', function(e){ if(e.target === this) this.classList.remove('open'); });
+
+function highlightToc(el){ document.querySelectorAll('.toc-item').forEach(function(i){ i.classList.remove('active'); }); el.classList.add('active'); }
+
+document.querySelectorAll('.snav-item').forEach(function(item){
+  item.addEventListener('click', function(){
+    document.querySelectorAll('.snav-item').forEach(function(i){ i.classList.remove('active'); });
+    this.classList.add('active');
+  });
+});
+
+function setShareLinks(){
+  var url = encodeURIComponent(window.location.href);
+  var title = encodeURIComponent('The Hidden Cost of Immigration Delays: USCIS Adjudication Pause Impact Report 2026');
+  document.getElementById('share-twitter').href = 'https://twitter.com/intent/tweet?url='+url+'&text='+title;
+  document.getElementById('share-linkedin').href = 'https://www.linkedin.com/sharing/share-offsite/?url='+url;
+  document.getElementById('share-facebook').href = 'https://www.facebook.com/sharer/sharer.php?u='+url;
+  document.getElementById('share-email').href = 'mailto:?subject='+title+'&body=Read the full report: '+url;
+}
+
+function copyPageLink(e){
+  e.preventDefault();
+  if(navigator.clipboard){ navigator.clipboard.writeText(window.location.href).then(function(){ alert('Link copied to clipboard!'); }); }
+  else { var t = document.createElement('textarea'); t.value = window.location.href; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); alert('Link copied!'); }
+}
+
+/* ── CONTACT DROPDOWN ── */
+function toggleContactDrop(e){
+  e.stopPropagation();
+  var drop = document.getElementById('contact-drop');
+  drop.style.display = drop.style.display === 'none' ? 'block' : 'none';
+}
+function copyEmail(btn){
+  var email = 'adjudicationpausesurvey@gmail.com';
+  var span = btn.querySelector('span');
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(email).then(function(){
+      if(span) span.textContent = '✓ Copied!';
+      setTimeout(function(){ if(span) span.textContent = 'Copy Address'; }, 1800);
+    });
+  } else {
+    var t = document.createElement('textarea'); t.value = email;
+    document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t);
+    if(span) span.textContent = '✓ Copied!';
+    setTimeout(function(){ if(span) span.textContent = 'Copy Address'; }, 1800);
+  }
+}
+document.addEventListener('click', function(e){
+  var drop = document.getElementById('contact-drop');
+  if(drop && !e.target.closest('#btn-cta-contact') && !e.target.closest('#contact-drop')){
+    drop.style.display = 'none';
+  }
+});
+
+/* ── CTA SHARE DROPDOWN ── */
+function ctaShare(e){
+  e.stopPropagation();
+  var drop = document.getElementById('share-cta-drop');
+  drop.style.display = drop.style.display === 'none' ? 'block' : 'none';
+}
+function shareVia(platform){
+  var url = encodeURIComponent(window.location.href);
+  var title = encodeURIComponent('The Hidden Cost of Immigration Delays: USCIS Adjudication Pause Impact Report 2026');
+  var urls = {
+    twitter:  'https://twitter.com/intent/tweet?url='+url+'&text='+title,
+    linkedin: 'https://www.linkedin.com/shareArticle?mini=true&url='+url+'&title='+title,
+    facebook: 'https://www.facebook.com/sharer/sharer.php?u='+url,
+    email:    'mailto:?subject='+title+'&body=Read%20the%20full%20report%3A%20'+url
+  };
+  if(urls[platform]) window.open(urls[platform], '_blank');
+  document.getElementById('share-cta-drop').style.display = 'none';
+}
+function ctaCopyLink(el){
+  var drop = document.getElementById('share-cta-drop');
+  var span = el.querySelector('span');
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(window.location.href).then(function(){
+      if(span) span.textContent = '✓ Link copied!';
+      setTimeout(function(){ if(span) span.textContent = 'Copy Link'; drop.style.display = 'none'; }, 1500);
+    });
+  } else {
+    var t = document.createElement('textarea'); t.value = window.location.href;
+    document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t);
+    if(span) span.textContent = '✓ Copied!';
+    setTimeout(function(){ if(span) span.textContent = 'Copy Link'; drop.style.display = 'none'; }, 1500);
+  }
+}
+document.addEventListener('click', function(e){
+  var drop = document.getElementById('share-cta-drop');
+  if(drop && !e.target.closest('#btn-cta-share') && !e.target.closest('#share-cta-drop')){
+    drop.style.display = 'none';
+  }
+});
+
+window.addEventListener('load', setShareLinks);
+
+// Chapter cards → coming soon in view mode
+document.querySelectorAll('.chapter-card').forEach(function(card){
+  card.addEventListener('click', function(e){
+    if(!editMode){
+      e.preventDefault();
+      document.getElementById('coming-soon-modal').classList.add('open');
+    }
+  });
+});
+
+// Infographic download links → coming soon in view mode
+document.querySelectorAll('.infographic-dl').forEach(function(dl){
+  dl.addEventListener('click', function(e){
+    if(!editMode){
+      e.preventDefault();
+      document.getElementById('coming-soon-modal').classList.add('open');
+    }
+  });
+});
+
+/* ─── PER-ELEMENT STYLE POPUP ─── */
+
+var styleTarget = null;
+
+function openStylePopup(el){
+  if(!editMode) return;
+  if(styleTarget) styleTarget.classList.remove('style-selected');
+  styleTarget = el;
+  el.classList.add('style-selected');
+
+  var popup = document.getElementById('style-popup');
+  var isBtn = el.classList.contains('btn') || (el.closest && el.closest('.btn'));
+  var isText = el.hasAttribute('contenteditable');
+  var isBlock = !isBtn && !isText;
+  var target = isBtn ? (el.closest('.btn') || el) : el;
+  if(isBtn) styleTarget = target;
+
+  // Show BG row for buttons and block elements
+  document.getElementById('sp-bg-row').style.display = (isBtn || isBlock) ? 'flex' : 'none';
+
+  // Pre-fill current computed styles
+  var cs = window.getComputedStyle(target);
+  document.getElementById('sp-size').value = cs.fontSize;
+  document.getElementById('sp-color').value = rgbToHex(cs.color);
+  document.getElementById('sp-color-hex').value = rgbToHex(cs.color);
+  if(isBtn || isBlock){
+    document.getElementById('sp-bg').value = rgbToHex(cs.backgroundColor);
+    document.getElementById('sp-bg-hex').value = rgbToHex(cs.backgroundColor);
+  }
+  document.getElementById('sp-font').value = '';
+  document.getElementById('sp-weight').value = '';
+
+  // Label
+  var label = 'Edit Text';
+  if(isBtn) label = 'Edit Button';
+  else if(el.classList.contains('finding-cell')) label = 'Edit Finding Card';
+  else if(el.classList.contains('impact-card')) label = 'Edit Impact Card';
+  else if(el.classList.contains('rec-item')) label = 'Edit Recommendation';
+  else if(el.classList.contains('article-card')) label = 'Edit Article Card';
+  else if(el.classList.contains('chapter-card')) label = 'Edit Chapter Card';
+  else if(el.classList.contains('stat-pill')) label = 'Edit Stat Pill';
+  else if(el.classList.contains('glance-cell')) label = 'Edit Glance Cell';
+  else if(el.classList.contains('report-card')) label = 'Edit Report Card';
+  else if(el.classList.contains('cta-section')) label = 'Edit CTA Section';
+  else if(el.classList.contains('methodology-banner')) label = 'Edit Banner';
+  else if(el.classList.contains('hero')) label = 'Edit Hero Section';
+  else if(el.tagName === 'SECTION') label = 'Edit Section Background';
+  else if(el.classList.contains('infographic-body')) label = 'Edit Card Body';
+  document.getElementById('sp-title').textContent = label;
+
+  // Position near clicked element
+  var rect = target.getBoundingClientRect();
+  var popW = 300;
+  var left = Math.min(rect.left + 20, window.innerWidth - popW - 20);
+  var top = rect.bottom + 8;
+  if(top + 360 > window.innerHeight) top = Math.max(8, rect.top - 360);
+  popup.style.left = Math.max(8, left) + 'px';
+  popup.style.top = Math.max(8, top) + 'px';
+  popup.classList.add('open');
+}
+
+function closeStylePopup(){
+  document.getElementById('style-popup').classList.remove('open');
+  if(styleTarget) styleTarget.classList.remove('style-selected');
+  styleTarget = null;
+}
+
+function applyStyle(){
+  if(!styleTarget) return;
+  var font = document.getElementById('sp-font').value;
+  var size = document.getElementById('sp-size').value.trim();
+  var weight = document.getElementById('sp-weight').value;
+  var color = document.getElementById('sp-color-hex').value.trim();
+  var bg = document.getElementById('sp-bg-hex').value.trim();
+  var bgVisible = document.getElementById('sp-bg-row').style.display !== 'none';
+
+  if(font) styleTarget.style.fontFamily = font;
+  if(size) styleTarget.style.fontSize = size;
+  if(weight) styleTarget.style.fontWeight = weight;
+  if(color) styleTarget.style.color = color;
+  if(bg && bgVisible) styleTarget.style.background = bg;
+  closeStylePopup();
+}
+
+// Sync color pickers with hex inputs
+document.getElementById('sp-color').addEventListener('input', function(){ document.getElementById('sp-color-hex').value = this.value; });
+document.getElementById('sp-color-hex').addEventListener('input', function(){ if(/^#[0-9a-fA-F]{6}$/.test(this.value)) document.getElementById('sp-color').value = this.value; });
+document.getElementById('sp-bg').addEventListener('input', function(){ document.getElementById('sp-bg-hex').value = this.value; });
+document.getElementById('sp-bg-hex').addEventListener('input', function(){ if(/^#[0-9a-fA-F]{6}$/.test(this.value)) document.getElementById('sp-bg').value = this.value; });
+
+function rgbToHex(rgb){
+  if(!rgb || rgb === 'transparent' || rgb.startsWith('#')) return rgb || '#000000';
+  var m = rgb.match(/(\d+)/g);
+  if(!m || m.length < 3) return '#000000';
+  return '#' + ((1<<24)+(+m[0]<<16)+(+m[1]<<8)+(+m[2])).toString(16).slice(1);
+}
+
+// Attach click handlers: in edit mode, clicking any text, button, or block opens the style popup
+document.addEventListener('click', function(e){
+  if(!editMode) return;
+  var popup = document.getElementById('style-popup');
+  if(popup.contains(e.target)) return;
+  if(e.target.closest('#edit-toolbar')) return;
+  if(e.target.closest('#style-popup')) return;
+  if(e.target.closest('.block-controls')) return;
+  if(e.target.closest('.modal-overlay')) return;
+  if(e.target.closest('.coming-soon-overlay')) return;
+  if(e.target.closest('.embed-slot')) return;
+
+  // Priority: contenteditable text > button > background block
+  var el = e.target.closest('[contenteditable]') || e.target.closest('.btn');
+  if(!el){
+    // Check for background-editable blocks
+    el = e.target.closest('.finding-cell') || e.target.closest('.impact-card') ||
+         e.target.closest('.rec-item') || e.target.closest('.article-card') ||
+         e.target.closest('.chapter-card') || e.target.closest('.stat-pill') ||
+         e.target.closest('.glance-cell') || e.target.closest('.report-card') ||
+         e.target.closest('.cta-section') || e.target.closest('.methodology-banner') ||
+         e.target.closest('.infographic-body') || e.target.closest('section') ||
+         e.target.closest('.hero');
+  }
+  if(el){
+    var clickedEl = el;
+    setTimeout(function(){ openStylePopup(clickedEl); }, 150);
+  } else {
+    closeStylePopup();
+  }
+}, true);
+</script>
+</body>
+</html>
